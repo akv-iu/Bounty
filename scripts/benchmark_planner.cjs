@@ -27,7 +27,7 @@ for (const capacity of [30, 0]) {
   cases.push({ name: request.scenarioId, regions: 5, slots: 24, jobs: 30, warmups: 20, samples: 200, p50Ms: sorted[99], p95Ms: sorted[189], maxMs: sorted[199], samplesMs, request });
 }
 const report = { measuredAt: new Date().toISOString(), runtime: process.version, platform: os.platform(), release: os.release(), arch: os.arch(), cpu: os.cpus()[0]?.model, logicalCpus: os.cpus().length, memoryGiB: Math.round(os.totalmem() / 2 ** 30), scope: 'validation and all three policies; Node only', budgetP95Ms: 50, passed: cases.every(c => c.p95Ms <= 50), cases };
-const destination = path.join(__dirname, '../docs/benchmarks/p2-node.json');
+const destination = path.join(__dirname, '../docs/benchmarks/p4-node.json');
 mkdirSync(path.dirname(destination), { recursive: true });
 writeFileSync(destination, JSON.stringify(report, null, 2) + '\n');
 for (const c of cases) console.log(`${c.name}: p50=${c.p50Ms.toFixed(3)} ms, p95=${c.p95Ms.toFixed(3)} ms, max=${c.maxMs.toFixed(3)} ms`);

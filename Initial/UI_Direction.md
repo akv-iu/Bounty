@@ -1,6 +1,6 @@
 # Proposed UI direction
 
-Status: visual direction accepted October 27, 2026. P3 implementation was authorized via H2 and is now ready for H3 visual review. The working Next.js app contains the map, batch editor and 5 × 24 heatmap. The preserved output/ preview still shows the earlier single-job timeline. The product design remains in Design_Proposal.md.
+Status: visual direction accepted October 27, 2026. P3 implementation was approved at H3 via "push and implement next"; P4 verifies release readiness. The working Next.js app contains the map, batch editor and 5 × 24 heatmap. The preserved output/ preview still shows the earlier single-job timeline. The product design remains in Design_Proposal.md.
 
 ## Visual reference
 
@@ -46,4 +46,4 @@ The app bundles DM Sans and IBM Plex Mono with OFL notices, uses the accepted da
 
 Browser inspection covered the production export in Brave at a desktop viewport (final DOM measurement 1920 × 861) and a 390 × 844 narrow viewport: deadline edits, eligibility rerouting, capacity rejection/recovery, invalid-draft discard, price-mode inspection and keyboard selection. The narrow heatmap scrolls locally with sticky region labels; observed page width stayed within the viewport. Controls have no animation or transition; the reduced-motion CSS override is present. No separate screen-reader audit or browser latency measurement was performed.
 
-[Desktop map/editor](../docs/screenshots/p3/desktop.jpg), [working heatmap](../docs/screenshots/p3/heatmap-desktop.jpg), [capacity rejection](../docs/screenshots/p3/desktop-failure.jpg), and [narrow heatmap](../docs/screenshots/p3/mobile-heatmap.jpg). Full verification and review disposition: [docs/validation.md](../docs/validation.md). H3 remains pending; these checks do not constitute user approval.
+[Desktop map/editor](../docs/screenshots/p3/desktop.jpg), [working heatmap](../docs/screenshots/p3/heatmap-desktop.jpg), [capacity rejection](../docs/screenshots/p3/desktop-failure.jpg), and [narrow heatmap](../docs/screenshots/p3/mobile-heatmap.jpg). Full verification and review disposition: [docs/validation.md](../docs/validation.md). H3 was approved via "push and implement next"; P4 adds latency and offline evidence without changing this layout.

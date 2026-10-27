@@ -10,11 +10,11 @@
 
 **Spec:** [Design_Proposal.md](Design_Proposal.md) and [UI_Direction.md](UI_Direction.md).
 
-Prepared October 27, 2026, following acceptance of the product direction. Scope: one developer, 24–48 hours of available build time. Estimates exclude time waiting for human review and are not delivery guarantees. P1 is approved and P2 implementation is verified; P3 is now authorized by H2.
+Prepared October 27, 2026, following acceptance of the product direction. Scope: one developer, 24–48 hours of available build time. Estimates exclude time waiting for human review and are not delivery guarantees. P1-P3 are approved and implemented; P4 was authorized by H3.
 
 Revision: critically reviewed using the installed Superpowers 7.0.1 writing-plans skill on October 27, 2026. This is a primary-agent self-review, not an independent reviewer verdict. Findings and their disposition are recorded in [Plan_Review.md](Plan_Review.md).
 
-**Current phase: P3 - implemented and verified; H3 visual review pending. H2 approved October 27, 2026 via "push and continue". P4 has not started.**
+**Current phase: P4 - verified; H4 deployment approval pending. H3 approved October 27, 2026 via "push and implement next". P3 pushed at 1317b66; H4 remains pending before deployment.**
 
 ## Phase controls and human checkpoints
 
@@ -31,8 +31,8 @@ Tags used throughout execution:
 | P0 — scope and phased plan | This plan, agreed product/UI direction, reusable-engine boundary, latency budgets and review rules | Document coverage and consistency review | **H0:** confirm phases, core scope and execution method before coding/data preparation | APPROVED |
 | P1 — data and input contract | A reproducible five-region dataset or fully synthetic fallback; validated request/result contract | 120 aligned carbon slots or explicit fallback; source/unit/timezone report; malformed-input checks | **H1:** inspect data labels and one example request/result; approve what the demo may claim | APPROVED |
 | P2 — planning engine | All three policies, full-window feasibility, accounting and explanations through the reusable entry point | Arithmetic/reservation/comparison tests, standalone Node smoke check and early maximum-size benchmark | **H2:** inspect benefit, no-benefit, tradeoff and failure examples plus early timings; approve decision behavior | APPROVED |
-| P3 — complete interface | Map, heatmap with job overlays, job edits, selected-job explanations and comparisons | Linked selections, keyboard access, readable overlays, failed-placement behavior; desktop and narrow-screen evidence | **H3:** use the working page and approve layout/behavior before visual polish is considered done | IMPLEMENTED — H3 PENDING |
-| P4 — performance and release preparation | Measured latency, production export, source notices, README and demo script | Production build, relevant tests, benchmark report and rehearsed demo pass | **H4:** inspect measured results and public-facing claims; authorize deployment to a named destination | NOT STARTED — awaits H3 |
+| P3 — complete interface | Map, heatmap with job overlays, job edits, selected-job explanations and comparisons | Linked selections, keyboard access, readable overlays, failed-placement behavior; desktop and narrow-screen evidence | **H3:** use the working page and approve layout/behavior before visual polish is considered done | APPROVED |
+| P4 — performance and release preparation | Measured latency, production export, source notices, README and demo script | Production build, relevant tests, benchmark report and rehearsed demo pass | **H4:** inspect measured results and public-facing claims; authorize deployment to a named destination | VERIFIED — H4 PENDING |
 | P5 — authorized deployment and handoff | Hosted demo, local fallback and reproduction instructions | Smoke test actual deployed URL, verify packaged assets and scenario labels | User receives a final evidence summary; competition submission remains separately authorized | NOT STARTED — awaits H4 |
 | P6 — optional AI job entry | Text-to-form draft with review, timeout/cancel and manual fallback | Parser validation, ambiguous-time handling, secret protection, cost and latency checks | **H-AI:** approve model, integration, usage cap and extra scope before implementation; review behavior before enabling publicly | OPTIONAL — NOT AUTHORIZED |
 
@@ -47,8 +47,8 @@ At each checkpoint present: (1) the artifact or working example, (2) what passed
 | H0 | Approved | User requested implementation with Ponytail and Elephant–Goldfish review on October 27, 2026; primary-agent implementation with phase-boundary reviews |
 | H1 | Approved | User requested moving to the next step after P1 evidence and GitHub push, October 27, 2026 |
 | H2 | Approved | User requested "push and continue" on October 27, 2026 after P2 evidence. Engine implemented; 63 TypeScript + 11 Python tests, build, standalone smoke, worked examples and Node benchmark pass. Independent review finding fixed; see [P2 evidence](../docs/validation.md), October 27, 2026 |
-| H3 | Pending | Working dashboard; 75 tests, typecheck/build/standalone smoke pass; desktop/mobile/keyboard checks and review correction recorded in docs/validation.md, October 27, 2026 |
-| H4 | Pending | Early Node benchmark passes; final browser performance and deployment checks remain P4 work |
+| H3 | Approved | User requested "push and implement next" after P3 evidence, October 27, 2026. P3 pushed to origin/feat/p3-dashboard at 1317b66. |
+| H4 | Pending | P4 tests/build, Node and 56-edit browser timing, offline exploration and demo pass; protocol limitations and proposed Cloudflare Pages destination are in docs/validation.md and docs/demo.md |
 | H-AI | Not requested | Optional AI remains disabled |
 
 ## Global constraints
@@ -60,7 +60,7 @@ At each checkpoint present: (1) the artifact or working example, (2) what passed
 - Historical carbon only after verifying the input files. Prices, workloads and capacity remain explicitly synthetic.
 - The engine must be usable without a browser, framework, network request or AI response.
 - The core requires no paid API, paid font or paid domain; keep hosting inside the chosen free tier.
-- P2 Node scheduling measurements are recorded in docs/validation.md. Browser interface performance remains unverified until measured on a recorded device/browser.
+- P2/P4 Node and P4 browser measurements are recorded in docs/validation.md, including the post-render-opportunity timing proxy and cold-load limitations.
 
 ## Review focus
 
@@ -76,7 +76,7 @@ At each checkpoint present: (1) the artifact or working example, (2) what passed
 - UI_Direction.md defines the accepted visual direction and intended heatmap interaction.
 - Project_Spec.md is historical background; it does not override the current design.
 - output/torus-ui-preview.html is a single-job synthetic interaction prototype, not the production scheduler or the final heatmap implementation.
-- goldfish_review_report.md records the prior design reviews. P1 review is recorded separately under docs/reviews/p1/; latency remains unmeasured.
+- goldfish_review_report.md records the prior design reviews. Phase reviews are stored separately under docs/reviews/; measured latency is recorded in docs/validation.md.
 
 ## Build boundary
 
@@ -178,18 +178,18 @@ Data display is not cloud-region availability. On the map and heatmap, free GPUs
 - [x] Add `concurrent_jobs_remain_visible`: two 16-GPU jobs in one 32-GPU slot must appear in cell detail, with zero free GPUs and a selectable window for either job. Add constant-signal and missing-signal cases: a flat signal has one color and a single-value legend; null is visibly unavailable. Require PASS; a price-view toggle must not change either assignment.
 - [x] Keep the selected preset's releaseSlot unchanged during deadline/eligibility edits. Adding a preset explicitly sets releaseSlot from the inspected hour and rejects a deadline outside the horizon with a visible form error. Label unapplied invalid drafts so the last valid plan is not mistaken for the new request's result.
 - [x] **[AUTO CHECK]** Inspect keyboard operation, reduced motion, readable overlays and narrow screens in the browser. Capture the actual UI with a selected job and both normal/failure states. Record any gaps instead of marking visual review complete from unit tests alone.
-- [ ] **[HUMAN CHECK REQUIRED: H3]** Review the functioning heatmap and editing flow. Resolve requested UI revisions before moving to release preparation. Commit the verified phase if authorized.
+- [x] **[HUMAN CHECK REQUIRED: H3]** Review the functioning heatmap and editing flow. Resolve requested UI revisions before moving to release preparation. Commit the verified phase if authorized.
 
 ### P4 — prove responsiveness and prepare release
 
-**Files:** modify scripts/benchmark_planner.cjs and docs/validation.md from P2 as needed; create docs/demo.md; update README.md and required license notices; make only performance fixes justified by profiling.
+**Files:** modify scripts/benchmark_planner.cjs and docs/validation.md from P2 as needed; create docs/demo.md, scripts/browser_probe.js and scripts/serve_probe.py for local-only measurement; update README.md and required license notices; make only performance fixes justified by profiling. Measurement scripts are not exported into the release site.
 
 **Interface:** `npm run benchmark` invokes the benchmark script and prints scenario size, runtime/device details supplied for the report, sample count and p50/p95/max. Tests import the same planScenario used in the UI. Do not invent a separate optimized benchmark implementation.
 
-- [ ] **[AUTO CHECK]** Rerun the early performance protocol on the final core, including 20 warm-ups and 200 measured planner runs. Fail the benchmark check if p95 exceeds the 50 ms budget; retain observed numbers. Measure edit-to-paint over at least 50 committed edits in a production browser, retaining every sample, and record the 100 ms target outcome.
-- [ ] Profile missed targets, make the smallest justified change, and rerun affected tests and timings. A target change requires an explicit H4 decision; do not silently relax it.
-- [ ] Run `npx vitest run`, `python -m unittest discover -s tests -p test_prepare_data.py`, and `npm run build`; require PASS and a generated static `out/` directory. Smoke-test the exported build and offline exploration after assets load. These commands are installed; rerun them against the final release artifact.
-- [ ] Prepare the four-scenario demonstration and README reproduction/module-use instructions. Validate data labels, font/map notices, no embedded provider secrets and no implication of actual GPU execution.
+- [x] **[AUTO CHECK]** Rerun the early performance protocol on the final core, including 20 warm-ups and 200 measured planner runs. Fail the benchmark check if p95 exceeds the 50 ms budget; retain observed numbers. Measure edit-to-paint over at least 50 committed edits in a production browser, retaining every sample, and record the 100 ms target outcome. P4 used a documented post-render-opportunity proxy: 56 native edits, p95 19.6 ms; this is not physical-display timing or INP.
+- [x] Profile missed targets, make the smallest justified change, and rerun affected tests and timings. No target was missed with the stated measurement method; no performance rewrite was justified. A target change requires an explicit H4 decision; do not silently relax it.
+- [x] Run `npx vitest run`, `python -m unittest discover -s tests -p test_prepare_data.py`, and `npm run build`; require PASS and a generated static `out/` directory. Smoke-test the exported build and offline exploration after assets load. P4: 75 TypeScript + 11 Python tests, typecheck/build/standalone smoke passed; origin-offline edits and inspection passed.
+- [x] Prepare the four-scenario demonstration and README reproduction/module-use instructions. Validate data labels, font/map notices, no embedded provider secrets and no implication of actual GPU execution. See docs/demo.md and docs/validation.md.
 - [ ] **[HUMAN CHECK REQUIRED: H4]** Present the working local build, test/performance report, remaining limitations and exact proposed hosting destination. Get deployment authorization before any public release.
 
 ### P5 — deploy the approved artifact
@@ -215,7 +215,7 @@ Data display is not cloud-region availability. On the map and heatmap, free GPUs
 
 ## Latency measurement
 
-Targets below remain acceptance budgets. P2 Node measurements are recorded in docs/validation.md; browser targets are not yet measured:
+Targets below remain acceptance budgets. P2/P4 Node and P4 browser results are recorded in docs/validation.md; the browser result uses a disclosed post-render-opportunity proxy:
 
 - Combined three-policy scheduling: p95 at or below 50 ms for five regions, 24 slots and 30 jobs on the declared reference laptop.
 - Committed form edit to updated results painted: p95 at or below 100 ms on that browser/device.
@@ -239,4 +239,4 @@ Maintain these three planning documents as the source of decisions; avoid parall
 
 ## Approval boundary
 
-The user has approved H0, H1 and H2. P3 is implemented; H3 is the next gate. Superpowers guided earlier phases but is not installed in the P3 session; the accepted checklist remains in use. Ponytail limits scope and EGM supplies independent phase review. Follow actual user decisions; do not infer approval from a passing test.
+The user has approved H0-H3. P4 is authorized; H4 is the next gate before deployment. Superpowers guided earlier phases but is not installed in the P3 session; the accepted checklist remains in use. Ponytail limits scope and EGM supplies independent phase review. Follow actual user decisions; do not infer approval from a passing test.

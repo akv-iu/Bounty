@@ -1,8 +1,63 @@
 # Implementation validation
 
+## P4 — performance and release preparation, October 27, 2026
+
+H3 was approved by "push and implement next". P3 commit `1317b660b3f9f4215157eaac5b1b8d8ad25bd971` is pushed to `origin/feat/p3-dashboard`. P4 work is on `feat/p4-release`; no production component, planner, dependency or data change was needed. H4 is pending before any deployment.
+
+### Release checks
+
+| Check | Result |
+|---|---|
+| `npm test` | 75 tests passed: 31 contract, 32 planner, 12 UI |
+| `npm run typecheck` | Passed |
+| `npm run build` | Passed; static `out/` generated |
+| Python `unittest discover -s tests -p test_prepare_data.py` | 11 passed using the project venv |
+| `npm run smoke:planner` | Passed outside React/Next/Vitest |
+| `npm run demo:planner` | Four teaching situations asserted; generated results unchanged |
+| `npm audit --omit=dev` | Zero reported production-dependency vulnerabilities; not a comprehensive security audit |
+| Production browser | Default classification and CISO 19:00–23:00 recommendation render; deadline edits update recommendation/comparisons; instrumentation absent from clean export |
+| Offline after load | Origin server stopped and port confirmed closed. Priority change still matched the planner; Texas/23:00 inspection and price shading worked; zero capacity showed 0/30 in every row and no comparable work; restoring capacity recovered MISO placement and appropriate unequal-completion warning |
+
+The earlier browser-host interruption was infrastructure failure, not an application failure. This retry used native Computer Use in the existing Brave window; no browser protection was bypassed.
+
+### Measured latency and protocol
+
+Reference laptop: Windows 10.0.26200 x64, Intel Core Ultra 7 155H, 22 logical CPUs, approximately 15 GiB RAM. Node 24.21.0; Brave with Chromium user agent 156.0.0.0, desktop viewport 1920 × 917 at DPR 1. The browser run was foreground, unthrottled CPU and loopback HTTP. Other normal desktop apps remained open. These are local lab results, not mobile-device or internet-load guarantees.
+
+| Scenario | Samples | p50 | p95 | Maximum | Budget |
+|---|---:|---:|---:|---:|---|
+| Node, 30 feasible jobs / 5 regions / 24 slots | 200 after 20 warmups | 3.349 ms | 5.824 ms | 10.149 ms | Pass ≤50 ms p95 |
+| Node, same size, zero capacity | 200 after 20 warmups | 1.607 ms | 2.643 ms | 6.701 ms | Pass ≤50 ms p95 |
+| Browser, native committed edit through render opportunity | 56 | 12.600 ms | 19.600 ms | 21.900 ms | Pass ≤100 ms p95 using stated proxy |
+| Browser, separate planner oracle on edited requests | 56 | 2.300 ms | 4.900 ms | 6.600 ms | Supplemental; different workload from Node fixture |
+
+Node includes validation and all three policies. The run overlapped build/test processes; retain those observed samples rather than presenting them as idle-machine results. [p4-node.json](benchmarks/p4-node.json) keeps both exact fixtures and every sample; P2 evidence is preserved separately.
+
+The browser fixture retains the original three jobs and adds 27 copies of `batch-eval`, all released at 0 with deadline 24, four-hour duration, 16 GPUs and 8 kW; original region capacities/signals remain intact. The 56 trusted native events comprise 20 objective switches, 20 original-job deadline changes between 1 and 24, and 16 CISO eligibility toggles. Short deadlines exercise unplaced/recovered results. No samples were discarded, no overlap/hidden-tab/mismatch failures occurred. [p4-browser.json](benchmarks/p4-browser.json) retains initial inputs, each edited job/objective, all samples and resource entries.
+
+The external local probe starts at a native select `change` timestamp or checkbox `click` captured at document capture phase, before React processes the checkbox. It timestamps completion at a timer task after requestAnimationFrame. This is a **post-render-opportunity proxy**, not an exact physical-display measurement or INP; the 100 ms target is not claimed as a hardware input-to-photon guarantee. After timing, it recalculates through the standalone public planner and checks the selected-job recommendation/window, heatmap outline and all three comparison rows in the DOM (some are below the viewport). Oracle computation is outside the reported UI interval. The probe runs alongside the unchanged production JavaScript and is absent from the shipped export.
+
+Independent EGM review found that the first probe timed checkboxes from the later native `change`, excluding their earlier React scheduling. That initial aggregate is superseded, preserved without editing as [p4-browser-initial.json](benchmarks/p4-browser-initial.json). The probe was corrected and all 56 native edits repeated; the table reports only the corrected run. No samples from either run were deleted. Final per-control p95: objective 17.1 ms, deadline 16.5 ms, eligibility 21.9 ms. [Review and disposition](reviews/p4/goldfish_review_report.md) distinguishes the independent finding from primary-agent retesting.
+
+An additional offline priority edit in the initial run matched at sample 57; it is functional smoke evidence only. The clean, uninstrumented export was also checked with its server stopped: at deadline 12/cost priority its wait-home result was 10.75 kg/$3.32 and regional choice 30.04 kg/$3.10, matching a separate Node calculation through the public entry point. Default controls were restored afterward.
+
+No missed target justified a worker, caching layer or scheduling rewrite. The app and planner source remain unchanged.
+
+### Cold-load and artifact evidence
+
+First visit to the new loopback origin `127.0.0.1:4174`, with `Cache-Control: no-store`, unthrottled CPU/network: first contentful paint **816 ms**, DOM interactive **830.7 ms**, DOMContentLoaded **910 ms**, load event end **1077.5 ms**. These load/resource entries are retained in p4-browser-initial.json and are unaffected by its checkbox-timing defect. This is one cold HTTP-cache visit with the local observer and oracle modules loaded, not a statistically representative CDN or low-end-device result. The browser process itself was already running. The corrected interaction run's separate navigation entries remain in p4-browser.json; they do not replace this first-visit evidence.
+
+Navigation plus ten successful production resource requests transferred **1,063,104 bytes** under the local uncompressed server (including its small injected HTML script tag; excluding probe/oracle resource requests). The two bundled TTF fonts contribute 375,744 body bytes; map SVG 122,805 bytes. The complete unmodified export has **29 files / 1,246,753 raw bytes**, including route/data/license assets not all needed at first load. [p4-export.json](benchmarks/p4-export.json) records each size and SHA-256. Compression and edge latency must be measured at the actual P5 URL. The optional missing favicon request returned 404; it did not affect app behavior.
+
+Font OFL notices, map attribution and EIA classification/date are included. Pattern scanning found no provider credentials/private keys in src/public/out/data/scripts; this is not a comprehensive security audit. No runtime data fetch, paid service, AI or dispatch is introduced. Historical default geographic savings remain zero; unequal completed sets suppress aggregate changes. [Demo and reproduction](demo.md) covers the four synthetic situations separately.
+
+### H4 decision
+
+Proposed deployment: Cloudflare Pages Direct Upload project `sunward-akv-bounty`, URL `https://sunward-akv-bounty.pages.dev`, using only `out/`. This destination is proposed, not created; account access and name availability remain unverified. See [demo.md](demo.md) for checked provider documentation and deployment limits. H4 requires accepting this evidence and authorizing that destination before P5. AI and competition submission remain separately gated.
+
 ## P3 — interactive dashboard, October 27, 2026
 
-H2 is approved by "push and continue". P2 commit `d859f10` is pushed to `origin/feat/p2-planner`. P3 is implemented and verified on `feat/p3-dashboard`; H3 remains required before P4. The original output/ prototype is preserved. P3 has not been pushed or deployed.
+H2 is approved by "push and continue". P2 commit `d859f10` is pushed to `origin/feat/p2-planner`. P3 is implemented and verified on `feat/p3-dashboard`; H3 was subsequently approved and P3 pushed at `1317b66`. The original output/ prototype is preserved. No deployment has occurred.
 
 ### State and interaction contract
 
@@ -56,7 +111,7 @@ Screenshots: [desktop map/editor](screenshots/p3/desktop.jpg), [heatmap](screens
 
 ### Human checkpoint
 
-H3 pending: inspect the working dashboard, heatmap and editing flow before release preparation. Use `npm run dev`, or serve the export using `.\.venv\Scripts\python.exe -m http.server 4173 --bind 127.0.0.1 --directory out`. AI and deployment remain separately gated.
+H3 approved via "push and implement next" on October 27, 2026. Use `npm run dev`, or serve the export using `.\.venv\Scripts\python.exe -m http.server 4173 --bind 127.0.0.1 --directory out`. AI and deployment remain separately gated.
 
 ## P2 — reusable planner, October 27, 2026
 

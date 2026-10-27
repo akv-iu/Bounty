@@ -1,0 +1,152 @@
+{
+  "description": "Unmodified npm run build static export. Raw file sizes, not compressed CDN transfer sizes. Probe server and scripts excluded.",
+  "fileCount": 29,
+  "totalBytes": 1246753,
+  "files": [
+    {
+      "path": "404/index.html",
+      "bytes": 7737,
+      "sha256": "863b425d059e8c03f2eaf35b6a07dfecd68eba47d2827cddff2800d171d608e7"
+    },
+    {
+      "path": "404.html",
+      "bytes": 7737,
+      "sha256": "863b425d059e8c03f2eaf35b6a07dfecd68eba47d2827cddff2800d171d608e7"
+    },
+    {
+      "path": "__next.__PAGE__.txt",
+      "bytes": 8537,
+      "sha256": "f9a7425b236ea035cec83b69129170034f730911fd6ed4146ee777ab165981d3"
+    },
+    {
+      "path": "__next._full.txt",
+      "bytes": 9073,
+      "sha256": "a98ead670c4da2334e43996c2c4121e8788255152d55a893efd0a0234c8a309a"
+    },
+    {
+      "path": "__next._tree.txt",
+      "bytes": 164,
+      "sha256": "3c1b45ce96146fd68238849f0dce75eac22f20a071eb0acf26385c59ffacfbdc"
+    },
+    {
+      "path": "_next/static/chunks/08xcn3jnivpa8.js",
+      "bytes": 185956,
+      "sha256": "d7fbd99cddb7d01dd41d1b36c1e259039fed8ac53131782010b1fcddf59dad81"
+    },
+    {
+      "path": "_next/static/chunks/0cz1d0mv5g_q7.js",
+      "bytes": 112594,
+      "sha256": "0973c1d64c88adc8e3c950410cb58b288f72118d5965b78049438deb8f2f9683"
+    },
+    {
+      "path": "_next/static/chunks/0umf92h1sb77c.js",
+      "bytes": 13822,
+      "sha256": "c410d0f2543e080768fc14f73b2bd1fdf103e26956e9730390b5e41c4fb5ff8b"
+    },
+    {
+      "path": "_next/static/chunks/2_7pfyl4yrg0e.css",
+      "bytes": 19238,
+      "sha256": "862458e41238a7a770d86e4951a566c4ade9f2aeeba8e0a2ed8f59f248aced03"
+    },
+    {
+      "path": "_next/static/chunks/3cfn99dbrcvvp.js",
+      "bytes": 16898,
+      "sha256": "ce93ca628abb25d17ebc40e5db225cc2b25ca3415910428f5dab7aa049ab506b"
+    },
+    {
+      "path": "_next/static/chunks/3wbm-994r45kr.js",
+      "bytes": 229820,
+      "sha256": "0112d166f239984294780810c159749ca06e78e3f1ce5db35ab98f31b95c9d5c"
+    },
+    {
+      "path": "_next/static/chunks/40d1mpqmwc0rw.js",
+      "bytes": 30079,
+      "sha256": "b0fba7ac6f3d6f4bd02fb41100fe65f48310046a074d9d5ef7b2ee21603f3794"
+    },
+    {
+      "path": "_next/static/chunks/turbopack-3-ry682tkyiqk.js",
+      "bytes": 10030,
+      "sha256": "8bbb58cbfd4633c1d828c6bc37bc32abc768a149c01b1dfc4f5131fd81274551"
+    },
+    {
+      "path": "_next/static/D7QoX53j7NHQu8F7OfUcE/_buildManifest.js",
+      "bytes": 219,
+      "sha256": "9476e0afd3f9da68a64e6ec58631191fd3eaca62c9f5a377e7517fe9a89e59ea"
+    },
+    {
+      "path": "_next/static/D7QoX53j7NHQu8F7OfUcE/_clientMiddlewareManifest.js",
+      "bytes": 96,
+      "sha256": "5483e3295dc35dfe29ea932efc85341c916f10ff78ff5b0e965e003710893a4a"
+    },
+    {
+      "path": "_next/static/D7QoX53j7NHQu8F7OfUcE/_ssgManifest.js",
+      "bytes": 80,
+      "sha256": "678f6ce2cb80b1fe72fc67e7412be6e2ab6ada083111b64f7c40d35e3cba5e00"
+    },
+    {
+      "path": "_not-found/__next._full.txt",
+      "bytes": 4820,
+      "sha256": "664d340b20471632f87b7d58e7e32ffb6d8814661f9b8092f37075e6a693a8cf"
+    },
+    {
+      "path": "_not-found/__next._not-found/__PAGE__.txt",
+      "bytes": 4102,
+      "sha256": "ff07107095538023f90a83a2f4957ffc0c4a0911fe39b54692d2c8bd79f6f265"
+    },
+    {
+      "path": "_not-found/__next._tree.txt",
+      "bytes": 218,
+      "sha256": "36441eda0d5e991cb41e53f51d003882c5f8f1d5cdc28a62f503a45ccb0ef28c"
+    },
+    {
+      "path": "_not-found/index.html",
+      "bytes": 7737,
+      "sha256": "863b425d059e8c03f2eaf35b6a07dfecd68eba47d2827cddff2800d171d608e7"
+    },
+    {
+      "path": "_not-found/index.txt",
+      "bytes": 4820,
+      "sha256": "664d340b20471632f87b7d58e7e32ffb6d8814661f9b8092f37075e6a693a8cf"
+    },
+    {
+      "path": "fonts/dm-sans.ttf",
+      "bytes": 240164,
+      "sha256": "8cd08d97e89c24d0aa92edd2f0f4c8ee6195eee9b7c9f154865a58b02f0c1c0d"
+    },
+    {
+      "path": "fonts/dmsans-OFL.txt",
+      "bytes": 4482,
+      "sha256": "9af36190332437f5ecd09974de43c1f7c77a310a996cdd8ceb25628b458840e1"
+    },
+    {
+      "path": "fonts/ibm-plex-mono.ttf",
+      "bytes": 135580,
+      "sha256": "6a3412f058c7d8dfd9170c41e85ade48e5156ecb89356110ca57a0a27734af46"
+    },
+    {
+      "path": "fonts/ibmplexmono-OFL.txt",
+      "bytes": 4456,
+      "sha256": "7e6b2818edbd8f6a01ae80641cc8f16a51080d08fb4e532be3a0b6f74adb07da"
+    },
+    {
+      "path": "index.html",
+      "bytes": 55363,
+      "sha256": "3af618e283fda4059b13bad9f6739276841d25620c9889205b65825ad23c10d0"
+    },
+    {
+      "path": "index.txt",
+      "bytes": 9073,
+      "sha256": "a98ead670c4da2334e43996c2c4121e8788255152d55a893efd0a0234c8a309a"
+    },
+    {
+      "path": "notices.txt",
+      "bytes": 1053,
+      "sha256": "91773f003f1fa9f6e7f20082f664d88ea471d3e1cf10ce8efa2aee3738713c6b"
+    },
+    {
+      "path": "us-map.svg",
+      "bytes": 122805,
+      "sha256": "9418b2f5e9380bb6238c29b4b4026ddf639fee6dc58c8f356f63cdfd5e75f140"
+    }
+  ]
+}

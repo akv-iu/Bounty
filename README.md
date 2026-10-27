@@ -2,7 +2,7 @@
 
 Energy-aware planning for flexible AI workloads, built for the Torus hackathon.
 
-**Status:** P3 interactive dashboard is implemented and verified. **H0–H2 approved; H3 visual review pending before performance/release preparation.**
+**Status:** P1–P3 are approved; P4 performance, offline and release checks pass, with the independent review finding corrected and retested. **H4 deployment approval remains pending.**
 
 The bundled snapshot contains 120 EIA consumption-carbon estimates for July 2, 2026 across five regions. Prices, workloads and capacity are synthetic. The engine calculates illustrative schedules; no real jobs are dispatched or realized savings measured.
 
@@ -43,7 +43,9 @@ npm run demo:planner   # regenerate asserted teaching examples and historical su
 npm run benchmark     # 30 jobs, 5 regions, 24 slots; retained samples and environment
 ```
 
-- [P3 validation, screenshots and H3 evidence; P2 history](docs/validation.md)
+- [P4 measurements and offline checks; P3 screenshots and P2 history](docs/validation.md)
+- [Demo walkthrough, browser timing reproduction and proposed deployment](docs/demo.md)
+- [Independent P4 review and timing correction](docs/reviews/p4/goldfish_review_report.md)
 - [Independent P3 review and fix disposition](docs/reviews/p3/goldfish_review_report.md)
 - [Independent P2 review and fix disposition](docs/reviews/p2/goldfish_review_report.md)
 
@@ -58,4 +60,4 @@ npm run benchmark     # 30 jobs, 5 regions, 24 slots; retained samples and envir
 - [UI direction](Initial/UI_Direction.md)
 - [Standalone synthetic UI preview](output/preview.html)
 
-The preserved preview uses one synthetic workload and the earlier plain timeline. P3 implements the map, heatmap and batch editing flow. Node engine latency is measured in the P2 report; browser latency and deployment remain unverified. AI is optional and disabled.
+The preserved preview uses one synthetic workload and the earlier plain timeline. The actual app has the map, heatmap and batch editing flow. P4 measured 30-job planner p95 below 6 ms in Node and native browser edit-to-render-opportunity p95 of 19.6 ms across 56 edits. These are local laptop results with a documented timing proxy, not a network or GPU execution guarantee. Loaded-page exploration works with the origin server stopped; offline reload and edit persistence are not supported. Deployment is pending. AI is optional and disabled.

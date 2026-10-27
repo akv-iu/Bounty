@@ -1,6 +1,6 @@
 # Compute Follows the Sun: proposed design
 
-Status: product direction accepted October 27, 2026. P1 data, P2 reusable planner and P3 interactive dashboard are implemented and verified. H0–H2 are approved; H3 visual review is pending before P4. See ../docs/validation.md for current evidence and Implementation_Plan.md for phase decisions.
+Status: product direction accepted October 27, 2026. P1 data, P2 reusable planner and P3 interactive dashboard are implemented and verified. H0–H3 are approved; P4 release verification is complete. H4 is required before deployment. See ../docs/validation.md for current evidence and Implementation_Plan.md for phase decisions.
 Prepared October 26, 2026. Budget: one developer, 24–48 hours. Primary track: Torus Option 2.
 
 This proposal replaces the earlier two-region scope recommendation. The original Project_Spec.md remains background. The competition permits labeled simulation and judges creativity, clarity of insight and execution.
