@@ -6,15 +6,15 @@
 
 **Architecture:** A pure TypeScript planning module accepts versioned scenario inputs and produces comparable policy results. A static Next.js dashboard consumes that module and bundled data; AI job entry is an optional separate feature.
 
-**Tech stack:** Next.js, React, TypeScript, Tailwind, D3 geographic/color utilities, Python for preparation, Vitest, static Cloudflare Pages hosting.
+**Tech stack:** Next.js, React, TypeScript, Tailwind/custom CSS, bundled projected SVG, Python for preparation, Vitest/Testing Library, planned static Cloudflare Pages hosting.
 
 **Spec:** [Design_Proposal.md](Design_Proposal.md) and [UI_Direction.md](UI_Direction.md).
 
-Prepared October 27, 2026, following acceptance of the product direction. Scope: one developer, 24–48 hours of available build time. Estimates exclude time waiting for human review and are not delivery guarantees. P1 is approved and P2 implementation is verified; P3 remains gated by H2.
+Prepared October 27, 2026, following acceptance of the product direction. Scope: one developer, 24–48 hours of available build time. Estimates exclude time waiting for human review and are not delivery guarantees. P1 is approved and P2 implementation is verified; P3 is now authorized by H2.
 
 Revision: critically reviewed using the installed Superpowers 7.0.1 writing-plans skill on October 27, 2026. This is a primary-agent self-review, not an independent reviewer verdict. Findings and their disposition are recorded in [Plan_Review.md](Plan_Review.md).
 
-**Current phase: P2 - implemented and verified; H2 review pending. H1 approved October 27, 2026; P3 has not started.**
+**Current phase: P3 - implemented and verified; H3 visual review pending. H2 approved October 27, 2026 via "push and continue". P4 has not started.**
 
 ## Phase controls and human checkpoints
 
@@ -30,8 +30,8 @@ Tags used throughout execution:
 |---|---|---|---|---|
 | P0 — scope and phased plan | This plan, agreed product/UI direction, reusable-engine boundary, latency budgets and review rules | Document coverage and consistency review | **H0:** confirm phases, core scope and execution method before coding/data preparation | APPROVED |
 | P1 — data and input contract | A reproducible five-region dataset or fully synthetic fallback; validated request/result contract | 120 aligned carbon slots or explicit fallback; source/unit/timezone report; malformed-input checks | **H1:** inspect data labels and one example request/result; approve what the demo may claim | APPROVED |
-| P2 — planning engine | All three policies, full-window feasibility, accounting and explanations through the reusable entry point | Arithmetic/reservation/comparison tests, standalone Node smoke check and early maximum-size benchmark | **H2:** inspect benefit, no-benefit, tradeoff and failure examples plus early timings; approve decision behavior | IMPLEMENTED - H2 PENDING |
-| P3 — complete interface | Map, heatmap with job overlays, job edits, selected-job explanations and comparisons | Linked selections, keyboard access, readable overlays, failed-placement behavior; desktop and narrow-screen evidence | **H3:** use the working page and approve layout/behavior before visual polish is considered done | NOT STARTED — awaits H2 |
+| P2 — planning engine | All three policies, full-window feasibility, accounting and explanations through the reusable entry point | Arithmetic/reservation/comparison tests, standalone Node smoke check and early maximum-size benchmark | **H2:** inspect benefit, no-benefit, tradeoff and failure examples plus early timings; approve decision behavior | APPROVED |
+| P3 — complete interface | Map, heatmap with job overlays, job edits, selected-job explanations and comparisons | Linked selections, keyboard access, readable overlays, failed-placement behavior; desktop and narrow-screen evidence | **H3:** use the working page and approve layout/behavior before visual polish is considered done | IMPLEMENTED — H3 PENDING |
 | P4 — performance and release preparation | Measured latency, production export, source notices, README and demo script | Production build, relevant tests, benchmark report and rehearsed demo pass | **H4:** inspect measured results and public-facing claims; authorize deployment to a named destination | NOT STARTED — awaits H3 |
 | P5 — authorized deployment and handoff | Hosted demo, local fallback and reproduction instructions | Smoke test actual deployed URL, verify packaged assets and scenario labels | User receives a final evidence summary; competition submission remains separately authorized | NOT STARTED — awaits H4 |
 | P6 — optional AI job entry | Text-to-form draft with review, timeout/cancel and manual fallback | Parser validation, ambiguous-time handling, secret protection, cost and latency checks | **H-AI:** approve model, integration, usage cap and extra scope before implementation; review behavior before enabling publicly | OPTIONAL — NOT AUTHORIZED |
@@ -46,8 +46,8 @@ At each checkpoint present: (1) the artifact or working example, (2) what passed
 |---|---|---|
 | H0 | Approved | User requested implementation with Ponytail and Elephant–Goldfish review on October 27, 2026; primary-agent implementation with phase-boundary reviews |
 | H1 | Approved | User requested moving to the next step after P1 evidence and GitHub push, October 27, 2026 |
-| H2 | Pending | Engine implemented; 63 TypeScript + 11 Python tests, build, standalone smoke, worked examples and Node benchmark pass. Independent review finding fixed; see [P2 evidence](../docs/validation.md), October 27, 2026 |
-| H3 | Pending | Earlier single-job mockup exists; heatmap/batch UI not implemented |
+| H2 | Approved | User requested "push and continue" on October 27, 2026 after P2 evidence. Engine implemented; 63 TypeScript + 11 Python tests, build, standalone smoke, worked examples and Node benchmark pass. Independent review finding fixed; see [P2 evidence](../docs/validation.md), October 27, 2026 |
+| H3 | Pending | Working dashboard; 75 tests, typecheck/build/standalone smoke pass; desktop/mobile/keyboard checks and review correction recorded in docs/validation.md, October 27, 2026 |
 | H4 | Pending | Early Node benchmark passes; final browser performance and deployment checks remain P4 work |
 | H-AI | Not requested | Optional AI remains disabled |
 
@@ -80,7 +80,7 @@ At each checkpoint present: (1) the artifact or working example, (2) what passed
 
 ## Build boundary
 
-Keep one project with a portable TypeScript planner and a Next.js dashboard consuming it. Start with a static export on Cloudflare Pages' free tier. Use Tailwind for styling, D3 geographic/color utilities, an SVG map and React heatmap cells. Prepare normalized scenario JSON locally with Python. Use Vitest for meaningful planner and integration tests. No recurring paid service is required for the core.
+Keep one project with a portable TypeScript planner and a Next.js dashboard consuming it. Start with a static export on Cloudflare Pages' free tier after deployment approval. P3 reuses the accepted projected SVG directly and calculates its small shared color scale without a D3 runtime dependency. Tailwind/custom CSS styles React heatmap cells. Prepare normalized scenario JSON locally with Python. Use Vitest for meaningful planner and integration tests. No recurring paid service is required for the core.
 
 Dependency versions will be selected from mutually compatible stable releases at implementation time and pinned in the lockfile. Keep required license/source notices. Do not copy Torus's proprietary font assets; bundle the free font substitutes.
 
@@ -110,7 +110,7 @@ The dashboard imports this entry point directly. A test or local example invokes
 | Hours 0–2 | Establish data gate. Create scripts/prepare_data.py, scripts/requirements.txt, data/README.md and data/scenario.json. Inspect actual EIA workbooks before choosing timestamp/column conversion. Normalize a complete common day; otherwise choose the fully synthetic branch. | 120 valid aligned carbon values with provenance, or one consistently labeled synthetic scenario. Record MISO fixed-EST conversion. Preserve source download locations and dates. |
 | Hours 2–4 | Create package.json, package-lock.json, tsconfig.json, next.config.ts, next-env.d.ts, postcss.config.mjs, .gitignore and vitest.config.ts as required by the selected stable scaffold. Define src/planner/types.ts, validate.ts and index.ts. | Runnable test environment, successful minimal static build and validated sample request before H1. |
 | Hours 4–8 | Implement src/planner/schedule.ts, compare.ts and explain.ts. Add tests/planner.test.ts, tests/contract.test.ts, tests/fixtures.ts, tsconfig.planner.json, scripts/build_planner.cjs, scripts/smoke_planner.cjs and scripts/benchmark_planner.cjs; record early evidence in docs/validation.md. | Full-window behavior, comparisons and standalone Node use pass; early benchmark exposes compute problems before UI work. |
-| Hours 8–14 | Create src/app/layout.tsx, page.tsx and globals.css; src/components/PlannerDashboard.tsx, RegionMap.tsx, RegionHeatmap.tsx, JobEditor.tsx, ComparisonTable.tsx and JobDetail.tsx. Add public/us-states.json, free font assets/notices and tests/ui.test.tsx. | Working batch/map/heatmap/edit/comparison flow, concurrent-job selection, and meaningful interaction tests; browser/keyboard review before H3. |
+| Hours 8–14 | Create src/app/layout.tsx, page.tsx and globals.css; src/components/PlannerDashboard.tsx, RegionMap.tsx, RegionHeatmap.tsx, JobEditor.tsx, ComparisonTable.tsx and JobDetail.tsx. Add public/us-map.svg, free font assets/notices and tests/ui.test.tsx. | Working batch/map/heatmap/edit/comparison flow, concurrent-job selection, and meaningful interaction tests; browser/keyboard review before H3. |
 | Hours 14–18 | Measure production-browser responsiveness and initial load; finish docs/validation.md, README.md and docs/demo.md. | Production export, full relevant tests and recorded latency results ready for H4; local demonstration rehearsed. |
 | Hours 18–20 | Deploy only after H4 authorization; verify actual hosted behavior and preserve the local build. | Working URL, smoke-test evidence and reproducible handoff. |
 | Hours 20–24 | Protected recovery time for data, integration, browser and deployment problems. | Repair core failures and re-run affected checks. Do not consume this buffer on AI or animations. |
@@ -160,9 +160,9 @@ These are aggressive active-work targets, not a promise that a full build fits e
 - [x] Prove the public interface in plain Node: tsconfig.planner.json compiles only src/planner to native ESM with declarations in dist/planner; scripts/build_planner.cjs runs that compiler and writes dist/planner/package.json with type module. This replaces the planned CommonJS output: TypeScript 7 resolver and Next bundler compatibility required the adjustment; the P1 public contract is unchanged. `npm run smoke:planner` builds then runs scripts/smoke_planner.cjs, which loads dist/planner/index.js, parses data/scenario.json, calls planScenario and asserts result JSON round-trip equality and input immutability. No Next.js, Vitest, DOM or network is involved. A broken public export must fail this check. This is local build output, not npm publication.
 - [x] **[AUTO CHECK]** Add the benchmark runner now, using the compiled entry point and the fixed fixtures described under Latency measurement. Record the 30-job p95 before UI work; run `npx vitest run tests/contract.test.ts tests/planner.test.ts`, `npm run smoke:planner` and `npm run benchmark`, and inspect all outcomes.
 - [x] **[AUTO CHECK]** Prepare four small worked results: feasible geographic benefit, a pinned/urgent no-benefit case, cost/carbon tradeoff, and capacity rejection. If historical data does not demonstrate a benefit, keep that outcome and use a separate labeled teaching fixture. Each includes inputs, assignments and arithmetic; no LLM-generated justification.
-- [ ] **[HUMAN CHECK REQUIRED: H2]** Review these results and early timings before wiring the full UI. Commit the verified phase if authorized.
+- [x] **[HUMAN CHECK REQUIRED: H2]** Review these results and early timings before wiring the full UI. Commit the verified phase if authorized.
 
-P2 execution record: the red/green sequence, packaging adjustment, review correction and final measurements are in [docs/validation.md](../docs/validation.md). Tests that already passed when added are explicitly identified there; no failing-first claim is made for them. H2 remains unchecked until the user decides.
+P2 execution record: the red/green sequence, packaging adjustment, review correction and final measurements are in [docs/validation.md](../docs/validation.md). Tests that already passed when added are explicitly identified there; no failing-first claim is made for them. H2 approved; P2 pushed to origin/feat/p2-planner at d859f10. P3 work starts on feat/p3-dashboard. Superpowers is not installed in this session; execute the accepted checklist with Ponytail and EGM review.
 
 ### P3 — connect the complete interface
 
@@ -172,12 +172,12 @@ P2 execution record: the red/green sequence, packaging adjustment, review correc
 
 Data display is not cloud-region availability. On the map and heatmap, free GPUs are the chosen policy's initial capacity minus all assigned GPU use in that slot. The chosen policy is regionAndTime. Shade by the original carbon/price signals, not by remaining capacity. Outline only the selected job's full window; show the selected cell's list of every overlapping job and total/free GPUs. This avoids stacking invisible bars while retaining the five-row layout. At narrow widths use a horizontally scrollable heatmap with readable minimum-width cells and fixed region labels; keep page-level scrolling vertical. Provide native region/hour selects as an equivalent accessible selection path.
 
-- [ ] Write failing interaction tests that change deadline/eligibility and assert the recommendation, timeline and all three policy rows update to the same new result; test a no-placement state and recovery. Run `npx vitest run tests/ui.test.tsx` and confirm intended failures.
-- [ ] Implement the map/editor/comparisons/detail with one shared result. Reuse the accepted dark palette and free fonts. Rerun the interaction tests and require PASS.
-- [ ] Write failing tests `heatmap_measure_does_not_reschedule`, `inspection_does_not_reschedule`, and `cell_selects_region_and_hour`. Count planner calls and compare assignments before/after the action. Implement the 5 x 24 heatmap with common per-measure scales, units, missing-data distinction and job overlays. Rerun and require PASS.
-- [ ] Add `concurrent_jobs_remain_visible`: two 16-GPU jobs in one 32-GPU slot must appear in cell detail, with zero free GPUs and a selectable window for either job. Add constant-signal and missing-signal cases: a flat signal has one color and a single-value legend; null is visibly unavailable. Require PASS; a price-view toggle must not change either assignment.
-- [ ] Keep the selected preset's releaseSlot unchanged during deadline/eligibility edits. Adding a preset explicitly sets releaseSlot from the inspected hour and rejects a deadline outside the horizon with a visible form error. Label unapplied invalid drafts so the last valid plan is not mistaken for the new request's result.
-- [ ] **[AUTO CHECK]** Inspect keyboard operation, reduced motion, readable overlays and narrow screens in the browser. Capture the actual UI with a selected job and both normal/failure states. Record any gaps instead of marking visual review complete from unit tests alone.
+- [x] Write failing interaction tests that change deadline/eligibility and assert the recommendation, timeline and all three policy rows update to the same new result; test a no-placement state and recovery. Run `npx vitest run tests/ui.test.tsx` and confirm intended failures.
+- [x] Implement the map/editor/comparisons/detail with one shared result. Reuse the accepted dark palette and free fonts. Rerun the interaction tests and require PASS.
+- [x] Write failing tests `heatmap_measure_does_not_reschedule`, `inspection_does_not_reschedule`, and `cell_selects_region_and_hour`. Count planner calls and compare assignments before/after the action. Implement the 5 x 24 heatmap with common per-measure scales, units, missing-data distinction and job overlays. Rerun and require PASS.
+- [x] Add `concurrent_jobs_remain_visible`: two 16-GPU jobs in one 32-GPU slot must appear in cell detail, with zero free GPUs and a selectable window for either job. Add constant-signal and missing-signal cases: a flat signal has one color and a single-value legend; null is visibly unavailable. Require PASS; a price-view toggle must not change either assignment.
+- [x] Keep the selected preset's releaseSlot unchanged during deadline/eligibility edits. Adding a preset explicitly sets releaseSlot from the inspected hour and rejects a deadline outside the horizon with a visible form error. Label unapplied invalid drafts so the last valid plan is not mistaken for the new request's result.
+- [x] **[AUTO CHECK]** Inspect keyboard operation, reduced motion, readable overlays and narrow screens in the browser. Capture the actual UI with a selected job and both normal/failure states. Record any gaps instead of marking visual review complete from unit tests alone.
 - [ ] **[HUMAN CHECK REQUIRED: H3]** Review the functioning heatmap and editing flow. Resolve requested UI revisions before moving to release preparation. Commit the verified phase if authorized.
 
 ### P4 — prove responsiveness and prepare release
@@ -239,4 +239,4 @@ Maintain these three planning documents as the source of decisions; avoid parall
 
 ## Approval boundary
 
-The user has approved H0 and P1 implementation with plugin-assisted review. H1 is approved; P2 is implemented and verified, and H2 is the next gate. Superpowers 7.0.1 guides execution, Ponytail limits scope, and EGM supplies independent phase review. Follow actual user decisions; do not infer approval from a passing test.
+The user has approved H0, H1 and H2. P3 is implemented; H3 is the next gate. Superpowers guided earlier phases but is not installed in the P3 session; the accepted checklist remains in use. Ponytail limits scope and EGM supplies independent phase review. Follow actual user decisions; do not infer approval from a passing test.

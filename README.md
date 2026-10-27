@@ -2,7 +2,7 @@
 
 Energy-aware planning for flexible AI workloads, built for the Torus hackathon.
 
-**Status:** P2 reusable scheduling engine is implemented. **H0 and H1 approved; H2 review pending before the interactive dashboard.**
+**Status:** P3 interactive dashboard is implemented and verified. **H0–H2 approved; H3 visual review pending before performance/release preparation.**
 
 The bundled snapshot contains 120 EIA consumption-carbon estimates for July 2, 2026 across five regions. Prices, workloads and capacity are synthetic. The engine calculates illustrative schedules; no real jobs are dispatched or realized savings measured.
 
@@ -15,7 +15,9 @@ npm ci
 npm run dev
 ```
 
-Open http://localhost:3000. `npm test`, `npm run typecheck` and `npm run build` verify the current implementation; the build exports `out/`. The app is still a static foundation page. The existing `output/preview.html` remains the earlier visual prototype.
+Open http://localhost:3000. `npm test`, `npm run typecheck` and `npm run build` verify the current implementation; the build exports `out/`. The existing `output/preview.html` remains the earlier visual prototype. The production dashboard is the Next.js app, not that prototype.
+
+Try shortening the selected job's deadline, restricting eligible regions or selecting "No spare GPUs." Map/heatmap selections inspect the resulting plan without rescheduling; the carbon/price view toggle is separate from scheduling priority. Invalid drafts are labeled and preserve the previous valid result. Fonts, map and scenario are bundled locally.
 
 ## Use the planner independently
 
@@ -41,7 +43,8 @@ npm run demo:planner   # regenerate asserted teaching examples and historical su
 npm run benchmark     # 30 jobs, 5 regions, 24 slots; retained samples and environment
 ```
 
-- [P2 validation, worked outcomes and H2 evidence](docs/validation.md)
+- [P3 validation, screenshots and H3 evidence; P2 history](docs/validation.md)
+- [Independent P3 review and fix disposition](docs/reviews/p3/goldfish_review_report.md)
 - [Independent P2 review and fix disposition](docs/reviews/p2/goldfish_review_report.md)
 
 - [P1 evidence and H1 decision](docs/p1-validation.md)
@@ -55,4 +58,4 @@ npm run benchmark     # 30 jobs, 5 regions, 24 slots; retained samples and envir
 - [UI direction](Initial/UI_Direction.md)
 - [Standalone synthetic UI preview](output/preview.html)
 
-The preview uses one synthetic workload and still has the earlier plain timeline. P3 adds the map, heatmap and editing flow. Node engine latency is measured in the P2 report; browser responsiveness and deployment remain unverified. AI is optional and disabled.
+The preserved preview uses one synthetic workload and the earlier plain timeline. P3 implements the map, heatmap and batch editing flow. Node engine latency is measured in the P2 report; browser latency and deployment remain unverified. AI is optional and disabled.

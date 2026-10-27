@@ -1,8 +1,66 @@
 # Implementation validation
 
+## P3 — interactive dashboard, October 27, 2026
+
+H2 is approved by "push and continue". P2 commit `d859f10` is pushed to `origin/feat/p2-planner`. P3 is implemented and verified on `feat/p3-dashboard`; H3 remains required before P4. The original output/ prototype is preserved. P3 has not been pushed or deployed.
+
+### State and interaction contract
+
+`PlannerDashboard(initialRequest: PlanRequest)` owns one accepted request/result pair, an editable draft, validation/calculation error text, selected job/region/hour, heatmap measure, capacity preset and workload-preset selection. The validated bundled request enters from the server page. Initial rendering calculates all three policies through the existing public planner; planner source is unchanged in P3. Child components receive that same result or its derived values.
+
+Deadline, eligibility, priority and capacity edits validate a new draft, call the public planner and atomically replace the accepted request/result only on success. Deadlines are selectable UTC boundaries 1–24; a deadline before release is a visible validation error, whereas a valid but too-short window is an unplaced result. Invalid drafts remain visible in the controls with an alert that map, recommendation and comparisons still show the last valid plan. Discard resets the draft/capacity control to that accepted plan without recalculation. Calculation errors also preserve the previous accepted plan. No persistence or dispatch occurs.
+
+Region, hour, selected job, scrubber and heatmap-measure changes only inspect the accepted result; none calls the planner. Initial selection is the first input job, its home region and hour zero. Carbon is the initial heatmap measure. Priority is separate from heatmap measure. Selected-job edits preserve its release hour. Capacity presets either restore each region's original input capacity or set every slot to zero. A status line identifies changed chosen-policy placements and all unplaced jobs after edits.
+
+Every UTC time label derives from the scenario start plus its slot offset, including the map, scrubber, editor, heatmap, assignment and alternative views. A `(+1d)` suffix distinguishes the next UTC date; non-midnight starts remain correct. Local time labels independently use the region's IANA zone. Scheduling still uses unchanged integer slot boundaries.
+
+Workload presets reuse the original batch's requirements; the default is its first job. Adding copies the selected preset with a collision-free suffixed ID, release equal to the inspected hour and deadline equal to release + max(6, duration). Out-of-horizon deadlines are rejected visibly; no clamping or silently shortened deadline. Rejected additions leave the batch and selection intact. Successful additions select the new job. The button disables at 30 jobs, and shared validation also enforces that limit. Empty initial batches have no available presets; the component shows an empty state, while the shipped snapshot always has three presets.
+
+### Display rules
+
+- RegionMap shows the inspected region/hour, local date/time using its IANA zone, source-classified carbon, synthetic electricity price and spare GPUs. Native region/hour selectors provide equivalents to pins and cells. Pins are representative pools using the accepted prototype's fixed map projection, not cloud locations or grid boundaries.
+- RegionHeatmap uses five rows and 24 UTC hours, a shared min/max across all regions for the selected signal, a common green-to-amber scale, a single-value constant legend and hatched × cells for missing values. Signal shading does not encode capacity. Only the selected job's full chosen-policy window is outlined; a dot marks inspection. Each cell is a labeled native button. The heatmap has local horizontal scrolling and sticky region labels.
+- Selected-cell capacity subtracts GPU use from every overlapping regionAndTime assignment. Detail lists every overlapping job as a selectable button, including concurrent jobs. Selecting a job changes its recommendation/outline, not the inspected hour or plan.
+- JobDetail displays the selected assignment, whole-run units, feasible candidate count and actual retained alternatives. It prefers the best alternative in another region; otherwise the best different start. Explanations name objective and deterministic tie order, plus the independent wait-home result. No placement uses the planner's typed reason.
+- ComparisonTable reads all three policy totals/counts directly. Aggregate change references waitHome and is shown only when the engine marks completed work comparable. Absolute magnitudes are labeled reduction or increase, preserving negative outcomes; percentages are omitted when null. Empty/different work suppresses all deltas with the engine's comparison reason. Costs are explicitly simulated electricity costs, not GPU bills.
+- Header and expandable assumptions distinguish historical provider estimates, simulated inputs, hindsight and calculated results. No AI, live feed, migration, execution button or savings guarantee is added.
+
+### Assets and dependencies
+
+The accepted map SVG is extracted to public/us-map.svg with its HTML-only attribute removed so it parses as standalone SVG. The fixed geometry avoids adding a runtime D3/TopoJSON dependency. DM Sans and IBM Plex Mono TTF files and their SIL OFL notices are bundled under public/fonts; map/font/EIA credits are in public/notices.txt. Both original prototype files are unchanged. No runtime package is added.
+
+UI tests add pinned dev dependencies: @testing-library/react 16.3.3, @testing-library/user-event 14.6.8 and jsdom 30.1.3. Vitest includes .test.tsx files; only the UI file selects jsdom, preserving Node engine checks. Tests render the actual dashboard against small five-region fixtures, exercise DOM controls, spy on the real public planner for inspection-call invariants and clean up between cases. Setup follows the [Testing Library guide](https://testing-library.com/docs/react-testing-library/setup/) and [Vitest per-file environment documentation](https://vitest.dev/guide/environment.html).
+
+### Verification and review
+
+The initial eight interaction tests failed against the empty dashboard before implementation, then passed. Three additional cases cover invalid-draft discard, incomparable outcomes and keyboard cell activation. A new capacity-transition assertion reproduced an incorrect "unchanged" status when placements disappeared; the status now compares both old and new assignments. Fresh-context EGM review found a Major mismatch for non-midnight starts: UTC labels used raw slot indices. A failing regression reproduced it; the shared formatter and every caller now derive actual UTC boundaries and distinguish date rollover. That regression passes. The reviewer also identified stale phase records, now updated. Fixes were verified by the primary implementer, not independently re-reviewed; [review scope and disposition](reviews/p3/goldfish_review_report.md).
+
+| Check | Final outcome |
+|---|---|
+| `npm test` | 75 passed: 31 contract, 32 planner, 12 UI |
+| `npm run typecheck` | Passed |
+| `npm run build` | Passed; static out/ export generated |
+| `npm run smoke:planner` | Passed; standalone entry still works without UI dependencies |
+| Browser flow | Deadline, eligibility, capacity failure/recovery, invalid-draft discard, measure/inspection and keyboard checks passed |
+| Asset inspection | Standalone SVG parses; map and bundled fonts render; source/license notices included |
+
+The Python pipeline and planner implementation are unchanged in P3; their P2 verification is retained below. No redundant benchmark or Python rerun is presented as new P3 evidence.
+
+### Browser evidence and limits
+
+Inspected the production export served on loopback in Brave on the same Windows laptop as P2. Final desktop DOM viewport was 1920 × 861 (1905 px page width with scrollbar); the narrow test used 390 × 844 (375 px page width). At narrow width the heatmap scrolled within its own 1004 px content area, with sticky region labels and no page-level horizontal overflow. Keyboard Tab/Enter selected the next heatmap cell with a visible focus outline, and ArrowLeft changed the scrubber hour. White selected-job outlines and inspection dots remained distinct. All rendered buttons had no animation and zero-duration transitions; the reduced-motion override is present in CSS. A separate OS-preference toggle or screen-reader audit was not performed.
+
+The historical default shows CISO 19:00–23:00 for batch-eval, 0.83 kg attributed CO₂ and $2.00 simulated cost. Shortening its deadline to slot 12 moves it to 00:00–04:00 and updates the full batch to 10.06 kg/$4.16. Excluding CISO then chooses ERCO and suppresses aggregate deltas because the home-only policies complete different work. Zero capacity shows rejection and "No completed work to compare"; restoring capacity recovers the plan. Selecting CISO at 19:00 lists the scheduled 16-GPU job and 16/32 free GPUs. Simulated-price viewing preserves the recommendation. Automated tests additionally cover concurrent overlapping jobs and flat/missing signals.
+
+Screenshots: [desktop map/editor](screenshots/p3/desktop.jpg), [heatmap](screenshots/p3/heatmap-desktop.jpg), [failure](screenshots/p3/desktop-failure.jpg), [narrow heatmap](screenshots/p3/mobile-heatmap.jpg). No application console errors were observed; the only logged warnings were from an unrelated browser extension. This is a browser functional/visual check, not measured latency or a comprehensive accessibility certification. P4's 50-edit production timing, initial-load profile and offline smoke remain outstanding.
+
+### Human checkpoint
+
+H3 pending: inspect the working dashboard, heatmap and editing flow before release preparation. Use `npm run dev`, or serve the export using `.\.venv\Scripts\python.exe -m http.server 4173 --bind 127.0.0.1 --directory out`. AI and deployment remain separately gated.
+
 ## P2 — reusable planner, October 27, 2026
 
-H1 was approved by the user's instruction to move to the next step. P2 is implemented on `feat/p2-planner`, based on P1 commit `f2acb29`; H2 remains required before P3. No real compute jobs are dispatched. The dashboard still shows a foundation page; the interactive map/heatmap is P3 work.
+H1 was approved by the user's instruction to move to the next step. P2 is implemented on `feat/p2-planner`, based on P1 commit `f2acb29`; H2 was approved October 27, 2026 via "push and continue". No real compute jobs are dispatched. At the P2 checkpoint the app was still a foundation page; the interactive dashboard is covered in the P3 record above.
 
 ### Public behavior
 
@@ -69,4 +127,4 @@ No browser edit-to-paint, first-load, mobile, live-network or cloud execution la
 
 Fresh-context EGM/Superpowers review found one minor runtime issue: accepted `releaseSlot: -0` survived into candidate start times, contradicting the stated JSON round-trip/normalization guarantee. The primary implementer reproduced the failure with a regression test, normalized zero when constructing candidates and confirmed the regression and full checks pass. No important scheduling, reservation, comparison or portability defects were found by static review. The fix was not independently re-reviewed. See [review scope and disposition](reviews/p2/goldfish_review_report.md).
 
-**H2 is pending:** approve P3 to connect the map, 5 × 24 heatmap, job editing and policy comparisons, or request engine changes first. P1 remains documented in [its evidence report](p1-validation.md). These phase changes are local on `feat/p2-planner`; they have not been pushed to GitHub.
+**H2 approved** October 27, 2026 via "push and continue". P1 remains documented in [its evidence report](p1-validation.md). P2 was pushed to `origin/feat/p2-planner` at `d859f10`. P3 proceeds on `feat/p3-dashboard`.

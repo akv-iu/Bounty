@@ -1,6 +1,6 @@
 # Project handoff
 
-P2 reusable scheduling, comparisons, worked examples and Node latency checks are implemented and verified. H0 and H1 are approved; H2 is pending before P3. See docs/validation.md for P2 evidence and docs/p1-validation.md for P1 history. Preserve the existing synthetic UI prototype in output/.
+P3 interactive map, heatmap, batch editor and linked comparisons are implemented and verified. H0, H1 and H2 are approved; H3 is pending before P4. See docs/validation.md for P3/P2 evidence and docs/p1-validation.md for P1 history. Preserve the existing synthetic UI prototype in output/.
 
 ## Read first
 
@@ -21,6 +21,6 @@ Initial/Project_Spec.md is historical background. output/ is a single-job UI pro
 - Use tests for meaningful scheduling, accounting, input validation and state transitions; inspect visual-only changes in the browser. Do not test prose or duplicate implementation details.
 - Installed verification commands: `npm test`, `npm run typecheck`, `npm run build`; Python: `.\.venv\Scripts\python.exe -m unittest discover -s tests -p test_prepare_data.py`. Setup and raw-data reproduction are in data/README.md. Standalone planner: `npm run smoke:planner`; worked cases: `npm run demo:planner`; Node timing: `npm run benchmark`. These compile native ESM through `npm run build:planner`. Browser latency remains unmeasured.
 
-EGM artifact directory for this phase: docs/reviews/p2/. Keep the previous root goldfish_review_report.md as historical design evidence.
+EGM artifact directory for this phase: docs/reviews/p3/. Keep the previous root goldfish_review_report.md as historical design evidence.
 
 Use Superpowers for phase task planning/execution when available and Ponytail to keep scope small. User instructions and actual approval decisions override skill defaults. Do not force two overlapping planning workflows or restart already accepted product discovery.

@@ -1,6 +1,6 @@
 # Compute Follows the Sun: proposed design
 
-Status: product direction accepted October 27, 2026. P1 has verified five-region historical carbon coverage and implemented the data/validation foundation; H1 remains pending. See ../docs/p1-validation.md for current evidence. The scheduling engine and full interface remain later phases in Implementation_Plan.md.
+Status: product direction accepted October 27, 2026. P1 data, P2 reusable planner and P3 interactive dashboard are implemented and verified. H0–H2 are approved; H3 visual review is pending before P4. See ../docs/validation.md for current evidence and Implementation_Plan.md for phase decisions.
 Prepared October 26, 2026. Budget: one developer, 24–48 hours. Primary track: Torus Option 2.
 
 This proposal replaces the earlier two-region scope recommendation. The original Project_Spec.md remains background. The competition permits labeled simulation and judges creativity, clarity of insight and execution.
@@ -105,7 +105,7 @@ The pitch should make it clear that an animation visualizes planned dispatch, no
 
 ## 6. Architecture and delivery boundary
 
-One frontend application using the familiar Next.js/TypeScript/Tailwind stack from the original spec, exported as a static site for Cloudflare Pages. Bundled scenario JSON flows through validation, a pure scheduling/calculation module, then map/heatmap/detail components. D3 supplies geographic projection and color scales; React renders accessible heatmap cells. No database, authentication, external job execution, production control plane, backend polling or provider abstraction framework is required. Use free hosting within its published limits and an included subdomain; no paid API or domain is required.
+One frontend application using the familiar Next.js/TypeScript/Tailwind stack from the original spec, exported as a static site for proposed Cloudflare Pages hosting. Bundled scenario JSON flows through validation, a pure scheduling/calculation module, then map/heatmap/detail components. P3 reuses the accepted projected SVG and a small shared numeric color scale without a D3 runtime dependency; React renders accessible heatmap cells. No database, authentication, external job execution, production control plane, backend polling or provider abstraction framework is required. Use free hosting within its published limits and an included subdomain; no paid API or domain is required.
 
 The planner is a reusable module inside this repository with one public entry point, independent of React, Next.js, browser globals, network calls and AI. It accepts a validated, versioned JSON-compatible request containing region-hour signals/capacity, jobs, and objective; it returns assignments, unplaced reasons, candidate explanations, provenance references and comparison results. Explicit UTC intervals and unit-bearing fields form the integration contract. Compile this entry point separately and invoke it in plain Node outside Next.js and the test runner, with JSON round-trip and input-immutability checks. This demonstrates the integration boundary without building a second service or publishing an npm package; it is not a claim of universal host compatibility.
 

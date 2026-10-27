@@ -1,0 +1,18 @@
+Sunward is an independent hackathon project, not an official Torus product.
+
+Fonts bundled from the Google Fonts repository:
+DM Sans: https://github.com/google/fonts/tree/main/ofl/dmsans
+IBM Plex Mono: https://github.com/google/fonts/tree/main/ofl/ibmplexmono
+Both distributed under the SIL Open Font License 1.1.
+Full notices: /fonts/dmsans-OFL.txt and /fonts/ibmplexmono-OFL.txt.
+
+Map: projected US state geometry retained from the accepted UI prototype,
+derived from US Atlas v3 / US Census Bureau cartography.
+US Atlas geometry is public domain: https://github.com/topojson/us-atlas
+The static SVG replaces a runtime D3/TopoJSON dependency for this fixed map.
+Pins are approximate simulated compute pools, not verified cloud sites or grid boundaries.
+
+Historical carbon: U.S. Energy Information Administration Grid Monitor,
+hourly consumption emissions estimates, July 2, 2026.
+Source and conversion details are recorded in data/README.md in the repository.
+Prices, capacity and workloads are synthetic. Calculated results are not realized savings.

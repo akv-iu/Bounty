@@ -1,6 +1,6 @@
 # Proposed UI direction
 
-Status: visual direction accepted in conversation on October 27, 2026, with a region-by-hour heatmap added to the intended UI. The existing preview still shows the earlier plain timeline. This does not authorize application implementation. The product design remains in Design_Proposal.md.
+Status: visual direction accepted October 27, 2026. P3 implementation was authorized via H2 and is now ready for H3 visual review. The working Next.js app contains the map, batch editor and 5 × 24 heatmap. The preserved output/ preview still shows the earlier single-job timeline. The product design remains in Design_Proposal.md.
 
 ## Visual reference
 
@@ -30,7 +30,7 @@ Edits recalculate the what-if plan and all comparison rows. A failed placement g
 
 ## Preview scope and validation
 
-The preview contains one synthetic evaluation job with computed window selection. Carbon curves, seeded prices and capacity are all synthetic. Its numbers are not evidence of regional energy conditions or actual savings. The final batch scheduler and historical ingestion have not been implemented.
+The preview contains one synthetic evaluation job with computed window selection. Carbon curves, seeded prices and capacity are all synthetic. Its numbers are not evidence of regional energy conditions or actual savings. The production app separately uses the verified P1 historical-carbon snapshot and P2 batch scheduler.
 
 Verified in the browser: flexible and tighter deadlines, cost priority, home-only eligibility, and capacity rejection. Checked the desktop rendering and narrow-screen overflow; no browser console errors were reported. The fragment contains small runtime assertions for eligibility, capacity, scheduling bounds and the energy-unit conversion.
 
@@ -39,3 +39,11 @@ The source fragment is output/torus-ui-preview.html; output/preview.html is its 
 ## Accepted direction and remaining checks
 
 Retain the dark Torus-inspired palette, free type substitutes and map-plus-workload layout. Keep the proposed final application's selectable batch of jobs and richer explanation in scope; the single-job preview is only for reviewing the interface. Heatmap contrast, assignment overlay readability and keyboard/narrow-screen interaction require implementation-time verification. AI job entry is optional and must not delay the manual planning flow.
+
+## P3 implementation evidence
+
+The app bundles DM Sans and IBM Plex Mono with OFL notices, uses the accepted dark/mint palette and preserves the map-plus-editor layout. The selected job's full window is outlined in white, with separate inspection dots, missing-data hatching and a common carbon/price scale. Native region/hour controls and keyboard-operable cells remain available. Dates and clock boundaries derive from startUtc, with +1d labels on rollover.
+
+Browser inspection covered the production export in Brave at a desktop viewport (final DOM measurement 1920 × 861) and a 390 × 844 narrow viewport: deadline edits, eligibility rerouting, capacity rejection/recovery, invalid-draft discard, price-mode inspection and keyboard selection. The narrow heatmap scrolls locally with sticky region labels; observed page width stayed within the viewport. Controls have no animation or transition; the reduced-motion CSS override is present. No separate screen-reader audit or browser latency measurement was performed.
+
+[Desktop map/editor](../docs/screenshots/p3/desktop.jpg), [working heatmap](../docs/screenshots/p3/heatmap-desktop.jpg), [capacity rejection](../docs/screenshots/p3/desktop-failure.jpg), and [narrow heatmap](../docs/screenshots/p3/mobile-heatmap.jpg). Full verification and review disposition: [docs/validation.md](../docs/validation.md). H3 remains pending; these checks do not constitute user approval.
