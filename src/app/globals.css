@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+:root { color-scheme: dark; background: #151515; color: #fff; font-family: Arial, sans-serif; }
+body { margin: 0; }
+main { max-width: 72rem; margin: auto; padding: clamp(1.5rem, 5vw, 5rem); }
+h1 { font-size: clamp(2rem, 5vw, 4rem); line-height: 1.1; margin: 1rem 0; }
+h2 { font-size: 1.3rem; margin-top: 2.5rem; }
+p { max-width: 65ch; line-height: 1.6; color: #c8ccc9; }
+.eyebrow { color: #a4f8ac; font-family: monospace; text-transform: uppercase; letter-spacing: .1em; }
+table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+th, td { padding: .8rem .5rem; text-align: left; border-bottom: 1px solid #353835; }
+caption { text-align: left; color: #c8ccc9; margin-bottom: .5rem; }
+.table-scroll { overflow-x: auto; }
