@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "rewriteRelativeImportExtensions": true,
+    "lib": ["ES2022", "ES2022.Intl"],
+    "types": ["node"],
+    "strict": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "rootDir": "src/planner",
+    "outDir": "dist/planner"
+  },
+  "include": ["src/planner/**/*.ts"]
+}

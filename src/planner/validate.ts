@@ -1,4 +1,4 @@
-import type { PlanRequest, ValidationIssue, ValidationResult } from "./types";
+import type { PlanRequest, ValidationIssue, ValidationResult } from "./types.ts";
 
 const finite = (value: unknown): value is number => typeof value === "number" && Number.isFinite(value);
 

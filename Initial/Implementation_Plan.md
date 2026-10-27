@@ -10,11 +10,11 @@
 
 **Spec:** [Design_Proposal.md](Design_Proposal.md) and [UI_Direction.md](UI_Direction.md).
 
-Prepared October 27, 2026, following acceptance of the product direction. Scope: one developer, 24–48 hours of available build time. Estimates exclude time waiting for human review and are not delivery guarantees. P1 implementation is now complete pending review; later phases remain gated.
+Prepared October 27, 2026, following acceptance of the product direction. Scope: one developer, 24–48 hours of available build time. Estimates exclude time waiting for human review and are not delivery guarantees. P1 is approved and P2 implementation is verified; P3 remains gated by H2.
 
 Revision: critically reviewed using the installed Superpowers 7.0.1 writing-plans skill on October 27, 2026. This is a primary-agent self-review, not an independent reviewer verdict. Findings and their disposition are recorded in [Plan_Review.md](Plan_Review.md).
 
-**Current phase: P1 — implemented, verified and EGM-reviewed; findings corrected. [HUMAN CHECK REQUIRED: H1 before P2]** See [P1 evidence](../docs/p1-validation.md).
+**Current phase: P2 - implemented and verified; H2 review pending. H1 approved October 27, 2026; P3 has not started.**
 
 ## Phase controls and human checkpoints
 
@@ -29,8 +29,8 @@ Tags used throughout execution:
 | Phase | Deliverable | Automatic exit evidence | Human checkpoint / decision | Current status |
 |---|---|---|---|---|
 | P0 — scope and phased plan | This plan, agreed product/UI direction, reusable-engine boundary, latency budgets and review rules | Document coverage and consistency review | **H0:** confirm phases, core scope and execution method before coding/data preparation | APPROVED |
-| P1 — data and input contract | A reproducible five-region dataset or fully synthetic fallback; validated request/result contract | 120 aligned carbon slots or explicit fallback; source/unit/timezone report; malformed-input checks | **H1:** inspect data labels and one example request/result; approve what the demo may claim | VERIFIED AND REVIEWED - awaits H1 |
-| P2 — planning engine | All three policies, full-window feasibility, accounting and explanations through the reusable entry point | Arithmetic/reservation/comparison tests, standalone Node smoke check and early maximum-size benchmark | **H2:** inspect benefit, no-benefit, tradeoff and failure examples plus early timings; approve decision behavior | NOT STARTED — awaits H1 |
+| P1 — data and input contract | A reproducible five-region dataset or fully synthetic fallback; validated request/result contract | 120 aligned carbon slots or explicit fallback; source/unit/timezone report; malformed-input checks | **H1:** inspect data labels and one example request/result; approve what the demo may claim | APPROVED |
+| P2 — planning engine | All three policies, full-window feasibility, accounting and explanations through the reusable entry point | Arithmetic/reservation/comparison tests, standalone Node smoke check and early maximum-size benchmark | **H2:** inspect benefit, no-benefit, tradeoff and failure examples plus early timings; approve decision behavior | IMPLEMENTED - H2 PENDING |
 | P3 — complete interface | Map, heatmap with job overlays, job edits, selected-job explanations and comparisons | Linked selections, keyboard access, readable overlays, failed-placement behavior; desktop and narrow-screen evidence | **H3:** use the working page and approve layout/behavior before visual polish is considered done | NOT STARTED — awaits H2 |
 | P4 — performance and release preparation | Measured latency, production export, source notices, README and demo script | Production build, relevant tests, benchmark report and rehearsed demo pass | **H4:** inspect measured results and public-facing claims; authorize deployment to a named destination | NOT STARTED — awaits H3 |
 | P5 — authorized deployment and handoff | Hosted demo, local fallback and reproduction instructions | Smoke test actual deployed URL, verify packaged assets and scenario labels | User receives a final evidence summary; competition submission remains separately authorized | NOT STARTED — awaits H4 |
@@ -45,10 +45,10 @@ At each checkpoint present: (1) the artifact or working example, (2) what passed
 | Gate | Decision | Evidence / date |
 |---|---|---|
 | H0 | Approved | User requested implementation with Ponytail and Elephant–Goldfish review on October 27, 2026; primary-agent implementation with phase-boundary reviews |
-| H1 | Pending | Five-region July 2 historical snapshot, contract and static shell implemented; evidence in docs/p1-validation.md |
-| H2 | Pending | Production engine not implemented |
+| H1 | Approved | User requested moving to the next step after P1 evidence and GitHub push, October 27, 2026 |
+| H2 | Pending | Engine implemented; 63 TypeScript + 11 Python tests, build, standalone smoke, worked examples and Node benchmark pass. Independent review finding fixed; see [P2 evidence](../docs/validation.md), October 27, 2026 |
 | H3 | Pending | Earlier single-job mockup exists; heatmap/batch UI not implemented |
-| H4 | Pending | Performance and deployment checks not run |
+| H4 | Pending | Early Node benchmark passes; final browser performance and deployment checks remain P4 work |
 | H-AI | Not requested | Optional AI remains disabled |
 
 ## Global constraints
@@ -60,7 +60,7 @@ At each checkpoint present: (1) the artifact or working example, (2) what passed
 - Historical carbon only after verifying the input files. Prices, workloads and capacity remain explicitly synthetic.
 - The engine must be usable without a browser, framework, network request or AI response.
 - The core requires no paid API, paid font or paid domain; keep hosting inside the chosen free tier.
-- Scheduling and interface performance targets remain unverified until measured on a recorded device and browser.
+- P2 Node scheduling measurements are recorded in docs/validation.md. Browser interface performance remains unverified until measured on a recorded device/browser.
 
 ## Review focus
 
@@ -144,23 +144,25 @@ These are aggressive active-work targets, not a promise that a full build fits e
 - [x] Write contract tests named `rejects_unsupported_schema`, `rejects_unknown_region`, `rejects_bad_lengths`, `rejects_nonfinite_inputs`, `preserves_signed_prices`, and `accepts_explicit_missing_signal`. Use the request fields defined above; missing signals remain unavailable for placement. Run `npx vitest run tests/contract.test.ts`, confirm intended failures, implement the validator, and require PASS.
 - [x] Add boundary assertions for the contract above: slot 24 is a valid deadline, slot 25 is invalid; a missing timezone is invalid; an empty job list and an over-capacity job are valid requests. Run the same contract tests and require PASS. Verify explicit historical failure leaves any prior valid output unchanged; write validated data through a temporary file and replace the output only after success.
 - [x] **[AUTO CHECK]** Save a sample request, proposed result shape, data coverage/provenance report, test results and exact chosen dependency versions for review. Record the command outcomes here or in data/README.md.
-- [ ] **[HUMAN CHECK REQUIRED: H1]** Review data truthfulness, region mapping, fallback if used, and the reusable input/output contract before engine implementation. Commit the verified phase with only its intended files if repository commits are authorized.
+- [x] **[HUMAN CHECK REQUIRED: H1]** Review data truthfulness, region mapping, fallback if used, and the reusable input/output contract before engine implementation. Commit the verified phase with only its intended files if repository commits are authorized.
 
 ### P2 — build the reusable planner
 
-**Files:** src/planner/schedule.ts, compare.ts, explain.ts, index.ts; tests/planner.test.ts, tests/contract.test.ts, tests/fixtures.ts; tsconfig.planner.json, scripts/build_planner.cjs, scripts/smoke_planner.cjs, scripts/benchmark_planner.cjs, package.json scripts, docs/validation.md and README.md usage example.
+**Files:** src/planner/schedule.ts (includes small comparison/explanation helpers), index.ts; tests/planner.test.ts, tests/contract.test.ts, tests/fixtures.ts; tsconfig.planner.json, scripts/build_planner.cjs, scripts/smoke_planner.cjs, scripts/benchmark_planner.cjs, package.json scripts, docs/validation.md and README.md usage example.
 
 **Interface:** `planScenario(request: PlanRequest): PlanResult` exported from src/planner/index.ts. Validate at entry and throw a typed `ScenarioValidationError` containing validation issues for malformed input; a valid job with no feasible placement is a normal unplaced result. `PlanResult` includes `schemaVersion`, `scenarioId`, `objective`, results for the three named policies, and comparison eligibility/reference metadata. Per-policy assignments retain full-run totals and candidate alternatives at the decision; diagnostics distinguish invalid input from no placement under policy reservations. If any otherwise-feasible candidate calculation, policy sum or comparison yields nonfinite arithmetic, throw an exported `ScenarioArithmeticError extends Error` implementing `ArithmeticFailure` (`name`, `code=NONFINITE_ARITHMETIC`, nonempty numeric field `path`), aborting the whole call without a partial result. No clamping, candidate skipping or false unplaced status. P1's exact frozen contract, unplaced-reason precedence and overflow examples are recorded in ../docs/p1-validation.md.
 
-- [ ] Write failing tests for exact accounting (`energyKwh === 200`, `costUsd === 20`, `carbonKg === 80` for the documented fixture), varying hourly signals, exact-deadline finish, all-hour GPU capacity, missing signals and excluded home. Run `npx vitest run tests/planner.test.ts` and confirm intended failures.
-- [ ] Test the frozen arithmetic error contract: two hours at `Number.MAX_VALUE` kW, overflowing sums of finite job totals, and overflowing comparison differences/percentages must throw `ScenarioArithmeticError` with the failed path and return no partial plan. Feasibility rejection is checked before candidate arithmetic. Export the error class alongside planScenario from index.ts.
-- [ ] Implement candidate enumeration, deterministic greedy ordering/reservation and calculation with shared units. Run the same tests and require PASS before comparison work.
-- [ ] Add failing tests for three independent policy capacities, unchanged input arrays, identical repeated results, deterministic objective/tie ordering, adversarial greedy rejection, zero/negative baseline cost, unequal completed job sets and equal-energy flat-price deltas. Implement comparison metadata and explanations until the same tests pass.
-- [ ] Add empty-work assertions: empty jobs and all-unplaced results must have comparison.comparable equal to false, comparison.reason equal to NO_COMPLETED_WORK and null savings. Excluded eligible regions and duration/window conflicts are normal unplaced results. Run the same planner tests to demonstrate the failures, implement, then require PASS.
-- [ ] Prove the public interface in plain Node: tsconfig.planner.json compiles only src/planner to CommonJS with declarations in dist/planner; scripts/build_planner.cjs runs that compiler and writes dist/planner/package.json with type commonjs. `npm run smoke:planner` builds then runs scripts/smoke_planner.cjs, which loads dist/planner/index.js, parses data/scenario.json, calls planScenario and asserts result JSON round-trip equality and input immutability. No Next.js, Vitest, DOM or network is involved. A broken public export must fail this check. This is local build output, not npm publication.
-- [ ] **[AUTO CHECK]** Add the benchmark runner now, using the compiled entry point and the fixed fixtures described under Latency measurement. Record the 30-job p95 before UI work; run `npx vitest run tests/contract.test.ts tests/planner.test.ts`, `npm run smoke:planner` and `npm run benchmark`, and inspect all outcomes.
-- [ ] **[AUTO CHECK]** Prepare four small worked results: feasible geographic benefit, a pinned/urgent no-benefit case, cost/carbon tradeoff, and capacity rejection. If historical data does not demonstrate a benefit, keep that outcome and use a separate labeled teaching fixture. Each includes inputs, assignments and arithmetic; no LLM-generated justification.
+- [x] Write failing tests for exact accounting (`energyKwh === 200`, `costUsd === 20`, `carbonKg === 80` for the documented fixture), varying hourly signals, exact-deadline finish, all-hour GPU capacity, missing signals and excluded home. Run `npx vitest run tests/planner.test.ts` and confirm intended failures.
+- [x] Test the frozen arithmetic error contract: two hours at `Number.MAX_VALUE` kW, overflowing sums of finite job totals, and overflowing comparison differences/percentages must throw `ScenarioArithmeticError` with the failed path and return no partial plan. Feasibility rejection is checked before candidate arithmetic. Export the error class alongside planScenario from index.ts.
+- [x] Implement candidate enumeration, deterministic greedy ordering/reservation and calculation with shared units. Run the same tests and require PASS before comparison work.
+- [x] Add failing tests for three independent policy capacities, unchanged input arrays, identical repeated results, deterministic objective/tie ordering, adversarial greedy rejection, zero/negative baseline cost, unequal completed job sets and equal-energy flat-price deltas. Implement comparison metadata and explanations until the same tests pass.
+- [x] Add empty-work assertions: empty jobs and all-unplaced results must have comparison.comparable equal to false, comparison.reason equal to NO_COMPLETED_WORK and null savings. Excluded eligible regions and duration/window conflicts are normal unplaced results. Run the same planner tests to demonstrate the failures, implement, then require PASS.
+- [x] Prove the public interface in plain Node: tsconfig.planner.json compiles only src/planner to native ESM with declarations in dist/planner; scripts/build_planner.cjs runs that compiler and writes dist/planner/package.json with type module. This replaces the planned CommonJS output: TypeScript 7 resolver and Next bundler compatibility required the adjustment; the P1 public contract is unchanged. `npm run smoke:planner` builds then runs scripts/smoke_planner.cjs, which loads dist/planner/index.js, parses data/scenario.json, calls planScenario and asserts result JSON round-trip equality and input immutability. No Next.js, Vitest, DOM or network is involved. A broken public export must fail this check. This is local build output, not npm publication.
+- [x] **[AUTO CHECK]** Add the benchmark runner now, using the compiled entry point and the fixed fixtures described under Latency measurement. Record the 30-job p95 before UI work; run `npx vitest run tests/contract.test.ts tests/planner.test.ts`, `npm run smoke:planner` and `npm run benchmark`, and inspect all outcomes.
+- [x] **[AUTO CHECK]** Prepare four small worked results: feasible geographic benefit, a pinned/urgent no-benefit case, cost/carbon tradeoff, and capacity rejection. If historical data does not demonstrate a benefit, keep that outcome and use a separate labeled teaching fixture. Each includes inputs, assignments and arithmetic; no LLM-generated justification.
 - [ ] **[HUMAN CHECK REQUIRED: H2]** Review these results and early timings before wiring the full UI. Commit the verified phase if authorized.
+
+P2 execution record: the red/green sequence, packaging adjustment, review correction and final measurements are in [docs/validation.md](../docs/validation.md). Tests that already passed when added are explicitly identified there; no failing-first claim is made for them. H2 remains unchecked until the user decides.
 
 ### P3 — connect the complete interface
 
@@ -186,7 +188,7 @@ Data display is not cloud-region availability. On the map and heatmap, free GPUs
 
 - [ ] **[AUTO CHECK]** Rerun the early performance protocol on the final core, including 20 warm-ups and 200 measured planner runs. Fail the benchmark check if p95 exceeds the 50 ms budget; retain observed numbers. Measure edit-to-paint over at least 50 committed edits in a production browser, retaining every sample, and record the 100 ms target outcome.
 - [ ] Profile missed targets, make the smallest justified change, and rerun affected tests and timings. A target change requires an explicit H4 decision; do not silently relax it.
-- [ ] Run `npx vitest run`, `python -m unittest discover -s tests -p test_prepare_data.py`, and `npm run build`; require PASS and a generated static `out/` directory. Smoke-test the exported build and offline exploration after assets load. These commands are planned, not currently runnable in this documentation-only repo.
+- [ ] Run `npx vitest run`, `python -m unittest discover -s tests -p test_prepare_data.py`, and `npm run build`; require PASS and a generated static `out/` directory. Smoke-test the exported build and offline exploration after assets load. These commands are installed; rerun them against the final release artifact.
 - [ ] Prepare the four-scenario demonstration and README reproduction/module-use instructions. Validate data labels, font/map notices, no embedded provider secrets and no implication of actual GPU execution.
 - [ ] **[HUMAN CHECK REQUIRED: H4]** Present the working local build, test/performance report, remaining limitations and exact proposed hosting destination. Get deployment authorization before any public release.
 
@@ -213,7 +215,7 @@ Data display is not cloud-region availability. On the map and heatmap, free GPUs
 
 ## Latency measurement
 
-Targets are acceptance budgets, not current measurements:
+Targets below remain acceptance budgets. P2 Node measurements are recorded in docs/validation.md; browser targets are not yet measured:
 
 - Combined three-policy scheduling: p95 at or below 50 ms for five regions, 24 slots and 30 jobs on the declared reference laptop.
 - Committed form edit to updated results painted: p95 at or below 100 ms on that browser/device.
@@ -237,4 +239,4 @@ Maintain these three planning documents as the source of decisions; avoid parall
 
 ## Approval boundary
 
-The user has approved H0 and P1 implementation with plugin-assisted review. H1 is the next gate; P2 is not started. Superpowers 7.0.1 guides execution, Ponytail limits scope, and EGM supplies independent phase review. Follow actual user decisions; do not infer approval from a passing test.
+The user has approved H0 and P1 implementation with plugin-assisted review. H1 is approved; P2 is implemented and verified, and H2 is the next gate. Superpowers 7.0.1 guides execution, Ponytail limits scope, and EGM supplies independent phase review. Follow actual user decisions; do not infer approval from a passing test.
