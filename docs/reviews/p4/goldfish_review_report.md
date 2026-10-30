@@ -19,3 +19,11 @@ Primary-agent retest: 56 native edits (20 objective, 20 deadline, 16 eligibility
 The reviewer reproduced all initial percentile arithmetic and counts, confirmed the 30-job fixture, cold-load entries and transfer total, and verified every export SHA-256/size (29 files, 1,246,753 bytes). H3 approval and pending H4 were consistent. No additional material finding was reported.
 
 The reviewer read the persona and standard fully, target and supplied scripts/components, planner entry/scheduler, package scripts, measurement files, demo, README, implementation plan, notices and installed React dispatch implementation. It did not execute a browser, rebuild, rerun tests or independently observe the offline check. The primary agent owns correction/retest evidence in docs/validation.md; this is not a second independent sign-off.
+
+## October 30 release follow-up — primary-agent review only
+
+The user requested reexamination before a public post and then authorized local finishing work, retaining hosting setup. The primary agent traced scheduling, accounting, validation, UI state, data preparation and release configuration, and reran checks. No new scheduling/accounting defect was reproduced. Two concrete public-demo gaps were addressed: additions previously required a reload to undo, and metadata used a different name with no sharing image. Removal/reset and sharing assets now have state/configuration tests and a verified static export. No new dependency, dispatch behavior, data source or planner interface was introduced.
+
+Reviewed removal to empty, invalid-draft removal/reset, capacity release, selection fallback, full-batch removal/re-addition, and configured/unconfigured metadata. All 87 TypeScript and 11 Python tests pass; build/standalone checks pass. Fresh Node timings meet the existing budget. The original prototype and historical benchmark/review artifacts remain intact. Exact fresh evidence is in docs/validation.md, with new manifests under docs/benchmarks/p4-release-*.json.
+
+Outstanding: fresh browser visual inspection (browser host unavailable), actual hosting configuration, live URL smoke test and platform link-preview behavior. This addendum is a primary-agent self-review, not another independent Goldfish review or a claim of deployment readiness beyond the documented checks.

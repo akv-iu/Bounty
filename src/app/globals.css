@@ -68,6 +68,9 @@ input[type="checkbox"] { accent-color: var(--mint); width: 13px; height: 13px; }
 .add-job label { margin-top: 12px; }
 .add-job p { margin: 8px 0; }
 .secondary { font-size: 11px; width: 100%; }
+.batch-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.batch-actions button { font-size: 11px; }
+.session-note { font-size: 10px; margin-top: 8px; }
 .recommendation { background: #a4f8ac0b; border: 1px solid #526953; border-radius: 8px; margin-top: 19px; padding: 18px; }
 .recommendation h3 { font-size: 22px; letter-spacing: -.02em; }
 .recommendation h3 .mono { font-size: 10px; color: var(--mint); margin-left: 8px; }

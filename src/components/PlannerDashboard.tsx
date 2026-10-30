@@ -37,12 +37,28 @@ export default function PlannerDashboard({ initialRequest }: { initialRequest: P
         const old = result.policies.regionAndTime.assignments.find(a => a.jobId === job.id);
         return current?.regionId !== old?.regionId || current?.startSlot !== old?.startSlot || current?.endSlot !== old?.endSlot;
       }).map(job => job.id);
+      const removed = request.jobs.filter(job => !next.jobs.some(j => j.id === job.id)).map(job => job.id);
       const unplaced = nextResult.policies.regionAndTime.unplaced.map(a => a.jobId);
-      setUpdateNote(`${changed.length ? `Changed placements: ${changed.join(", ")}.` : "Placements unchanged: any placed windows still rank first among feasible candidates."}${unplaced.length ? ` Unplaced: ${unplaced.join(", ")}.` : " All jobs placed."}`);
+      const placements = changed.length ? `Changed placements: ${changed.join(", ")}.` : "Placements unchanged: any placed windows still rank first among feasible candidates.";
+      const completion = unplaced.length ? `Unplaced: ${unplaced.join(", ")}.` : "All jobs placed.";
+      setUpdateNote(`${removed.length ? `Removed: ${removed.join(", ")}. ` : ""}${next.jobs.length ? `${placements} ${completion}` : "No jobs in the batch. Add a workload preset to begin."}`);
       setAccepted({ request: validation.value, result: nextResult }); setError(""); return true;
     } catch (failure) { setError(failure instanceof Error ? failure.message : "Calculation failed"); return false; }
   }
   function edit(next: PlanRequest) { setDraft(next); commit(next); }
+  function removeSelectedJob() {
+    const next = { ...draft, jobs: draft.jobs.filter(j => j.id !== selectedJobId) };
+    if (commit(next)) { setDraft(next); setSelectedJobId(next.jobs[0]?.id ?? ""); }
+  }
+  function resetDemo() {
+    if (!commit(initialRequest)) return;
+    setDraft(initialRequest);
+    setSelectedJobId(initialRequest.jobs[0]?.id ?? "");
+    setSelectedRegionId(initialRequest.jobs[0]?.homeRegionId ?? initialRequest.regions[0].id);
+    setSlot(0); setMeasure("carbon"); setCapacity("original");
+    setPresetId(initialRequest.jobs[0]?.id ?? "");
+    setUpdateNote("Demo reset. Original workloads, settings and capacity restored.");
+  }
   function addPreset() {
     const preset = initialRequest.jobs.find(j => j.id === presetId);
     if (!preset) return;
@@ -62,7 +78,7 @@ export default function PlannerDashboard({ initialRequest }: { initialRequest: P
       <RegionMap regions={request.regions} selected={selectedRegion} slot={slot} startUtc={request.startUtc} freeGpus={freeGpus} onRegion={setSelectedRegionId} onHour={setSlot} />
       <section className="panel workload-panel" aria-label="Workload planning"><JobEditor request={draft} job={draft.jobs.find(j => j.id === selectedJobId)} onEdit={job => edit({ ...draft, jobs: draft.jobs.map(j => j.id === job.id ? job : j) })} onSelect={setSelectedJobId} onObjective={objective => edit({ ...draft, objective })} capacity={capacity} onCapacity={value => {
         setCapacity(value); edit({ ...draft, regions: draft.regions.map(r => ({ ...r, availableGpus: value === "zero" ? Array(24).fill(0) : [...initialRequest.regions.find(original => original.id === r.id)!.availableGpus] })) });
-      }} presetId={presetId} onPreset={setPresetId} presets={initialRequest.jobs} onAdd={addPreset} /><JobDetail request={request} result={result} job={selectedJob} /></section>
+      }} presetId={presetId} onPreset={setPresetId} presets={initialRequest.jobs} onAdd={addPreset} onRemove={removeSelectedJob} onReset={resetDemo} /><JobDetail request={request} result={result} job={selectedJob} /></section>
     </div>
     <p className="update-note" role="status">{updateNote}</p>
     <RegionHeatmap startUtc={request.startUtc} regions={request.regions} measure={measure} onMeasure={setMeasure} selectedRegionId={selectedRegionId} slot={slot} assignment={assignment} onInspect={(id, h) => { setSelectedRegionId(id); setSlot(h); }} />

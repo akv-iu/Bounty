@@ -2,6 +2,10 @@
 
 P3 interactive map, heatmap, batch editor and linked comparisons are implemented and verified. H0-H3 are approved; P4 verification is complete and H4 is required before deployment. See docs/validation.md for P4/P3/P2 evidence and docs/p1-validation.md for P1 history. Preserve the existing synthetic UI prototype in output/.
 
+October 30 follow-up: local job removal/reset and branded sharing assets are implemented. The user retains hosting/public-URL setup and publication; do not deploy on their behalf. `SITE_URL` is optional locally and must be set to the actual HTTPS origin before the public build. See docs/demo.md for setup and docs/validation.md for fresh checks and browser limits.
+
+Repository workflow: the user requested pushing the completed app to `main` and working on `main` only. Keep future work on `main` unless the user changes that instruction. Earlier phase branches remain historical.
+
 ## Read first
 
 1. Initial/Implementation_Plan.md — current phase, tasks, human gates and decision record.

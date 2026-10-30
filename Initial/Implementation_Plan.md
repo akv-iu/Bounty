@@ -14,7 +14,7 @@ Prepared October 27, 2026, following acceptance of the product direction. Scope:
 
 Revision: critically reviewed using the installed Superpowers 7.0.1 writing-plans skill on October 27, 2026. This is a primary-agent self-review, not an independent reviewer verdict. Findings and their disposition are recorded in [Plan_Review.md](Plan_Review.md).
 
-**Current phase: P4 - verified; H4 deployment approval pending. H3 approved October 27, 2026 via "push and implement next". P3 pushed at 1317b66; H4 remains pending before deployment.**
+**Current phase: P4 - October 30 release finishing authorized and implemented locally; automated verification passes. Fresh browser inspection remains outstanding. The user retains hosting configuration and publication; P5 is not deployed. H4 is not an authorization for the agent to publish.**
 
 ## Phase controls and human checkpoints
 
@@ -32,8 +32,8 @@ Tags used throughout execution:
 | P1 — data and input contract | A reproducible five-region dataset or fully synthetic fallback; validated request/result contract | 120 aligned carbon slots or explicit fallback; source/unit/timezone report; malformed-input checks | **H1:** inspect data labels and one example request/result; approve what the demo may claim | APPROVED |
 | P2 — planning engine | All three policies, full-window feasibility, accounting and explanations through the reusable entry point | Arithmetic/reservation/comparison tests, standalone Node smoke check and early maximum-size benchmark | **H2:** inspect benefit, no-benefit, tradeoff and failure examples plus early timings; approve decision behavior | APPROVED |
 | P3 — complete interface | Map, heatmap with job overlays, job edits, selected-job explanations and comparisons | Linked selections, keyboard access, readable overlays, failed-placement behavior; desktop and narrow-screen evidence | **H3:** use the working page and approve layout/behavior before visual polish is considered done | APPROVED |
-| P4 — performance and release preparation | Measured latency, production export, source notices, README and demo script | Production build, relevant tests, benchmark report and rehearsed demo pass | **H4:** inspect measured results and public-facing claims; authorize deployment to a named destination | VERIFIED — H4 PENDING |
-| P5 — authorized deployment and handoff | Hosted demo, local fallback and reproduction instructions | Smoke test actual deployed URL, verify packaged assets and scenario labels | User receives a final evidence summary; competition submission remains separately authorized | NOT STARTED — awaits H4 |
+| P4 — performance and release preparation | Measured latency, production export, source notices, README and demo script | Production build, relevant tests, benchmark report and rehearsed demo pass | **H4:** inspect measured results and public-facing claims; authorize deployment to a named destination | OCT 30 LOCAL CHECKS PASS — fresh visual follow-up outstanding |
+| P5 — authorized deployment and handoff | Hosted demo, local fallback and reproduction instructions | Smoke test actual deployed URL, verify packaged assets and scenario labels | User receives a final evidence summary; competition submission remains separately authorized | NOT DEPLOYED — user retains hosting/public-URL setup |
 | P6 — optional AI job entry | Text-to-form draft with review, timeout/cancel and manual fallback | Parser validation, ambiguous-time handling, secret protection, cost and latency checks | **H-AI:** approve model, integration, usage cap and extra scope before implementation; review behavior before enabling publicly | OPTIONAL — NOT AUTHORIZED |
 
 The earlier conversational acceptance covers the product direction, not these new gate decisions. No gate is marked approved until the user actually approves it. If the user explicitly approves several named phases together, record that scope and do not ask again at those same boundaries. Scope changes affecting data truthfulness, cost, dependencies or execution authority reopen the relevant checkpoint.
@@ -48,8 +48,10 @@ At each checkpoint present: (1) the artifact or working example, (2) what passed
 | H1 | Approved | User requested moving to the next step after P1 evidence and GitHub push, October 27, 2026 |
 | H2 | Approved | User requested "push and continue" on October 27, 2026 after P2 evidence. Engine implemented; 63 TypeScript + 11 Python tests, build, standalone smoke, worked examples and Node benchmark pass. Independent review finding fixed; see [P2 evidence](../docs/validation.md), October 27, 2026 |
 | H3 | Approved | User requested "push and implement next" after P3 evidence, October 27, 2026. P3 pushed to origin/feat/p3-dashboard at 1317b66. |
-| H4 | Pending | P4 tests/build, Node and 56-edit browser timing, offline exploration and demo pass; protocol limitations and proposed Cloudflare Pages destination are in docs/validation.md and docs/demo.md |
+| H4 | User-managed release; agent deployment not authorized | October 30: user requested necessary finishing work and instructions, explicitly retaining public-URL setup. Local removal/reset and sharing improvements authorized. Fresh evidence and remaining browser checks are in docs/validation.md; publishing instructions are in docs/demo.md. No destination/account is selected or deployed by the agent. |
 | H-AI | Not requested | Optional AI remains disabled |
+
+Repository decision, October 30: user requested "Push it to main lets do it in main only". Consolidate the existing phase history and verified release follow-up onto `main`, push to origin, and use `main` for subsequent work. This authorizes the repository push; hosting configuration remains with the user.
 
 ## Global constraints
 
@@ -181,6 +183,8 @@ Data display is not cloud-region availability. On the map and heatmap, free GPUs
 - [x] **[HUMAN CHECK REQUIRED: H3]** Review the functioning heatmap and editing flow. Resolve requested UI revisions before moving to release preparation. Commit the verified phase if authorized.
 
 ### P4 — prove responsiveness and prepare release
+
+October 30 follow-up scope, authorized by the user: add selected-job removal and demo reset with state-transition tests; align Sunward metadata, favicon and sharing image; document optional build-time `SITE_URL` and user-operated publishing. Keep the planner, scenario and `output/` prototype unchanged. Local automated verification is complete; a fresh visual browser pass remains outstanding due to unavailable browser automation. This is a release finishing amendment, not a new product phase.
 
 **Files:** modify scripts/benchmark_planner.cjs and docs/validation.md from P2 as needed; create docs/demo.md, scripts/browser_probe.js and scripts/serve_probe.py for local-only measurement; update README.md and required license notices; make only performance fixes justified by profiling. Measurement scripts are not exported into the release site.
 

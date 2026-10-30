@@ -1,0 +1,162 @@
+{
+  "description": "October 30 local release follow-up export, SITE_URL unset. Rebuild with the actual public origin before final upload. Raw sizes, not CDN transfer sizes.",
+  "fileCount": 31,
+  "totalBytes": 1314857,
+  "files": [
+    {
+      "path": "404.html",
+      "bytes": 9613,
+      "sha256": "6619d26c9952432e58a426ada35f06c7df7943c9eff9a3c95eca17f09e565bda"
+    },
+    {
+      "path": "404/index.html",
+      "bytes": 9613,
+      "sha256": "6619d26c9952432e58a426ada35f06c7df7943c9eff9a3c95eca17f09e565bda"
+    },
+    {
+      "path": "__next.__PAGE__.txt",
+      "bytes": 9503,
+      "sha256": "fca5ce76ab80e886931d0ea49f8666cd1037645eb75a6f1b51d9e1b2a5a4d1a5"
+    },
+    {
+      "path": "__next._full.txt",
+      "bytes": 10039,
+      "sha256": "2caca16139792d0d747ba8739cd2826685762998a7c4d4a193b4b84707eddb0f"
+    },
+    {
+      "path": "__next._tree.txt",
+      "bytes": 164,
+      "sha256": "984465515c1b033420582d3fffeba079c0911d0b2a2e65a24b8ef44770ebdb90"
+    },
+    {
+      "path": "_next/static/T7gPst-IrUb6A1UNMT0-_/_buildManifest.js",
+      "bytes": 219,
+      "sha256": "9476e0afd3f9da68a64e6ec58631191fd3eaca62c9f5a377e7517fe9a89e59ea"
+    },
+    {
+      "path": "_next/static/T7gPst-IrUb6A1UNMT0-_/_clientMiddlewareManifest.js",
+      "bytes": 96,
+      "sha256": "5483e3295dc35dfe29ea932efc85341c916f10ff78ff5b0e965e003710893a4a"
+    },
+    {
+      "path": "_next/static/T7gPst-IrUb6A1UNMT0-_/_ssgManifest.js",
+      "bytes": 80,
+      "sha256": "678f6ce2cb80b1fe72fc67e7412be6e2ab6ada083111b64f7c40d35e3cba5e00"
+    },
+    {
+      "path": "_next/static/chunks/08xcn3jnivpa8.js",
+      "bytes": 185956,
+      "sha256": "d7fbd99cddb7d01dd41d1b36c1e259039fed8ac53131782010b1fcddf59dad81"
+    },
+    {
+      "path": "_next/static/chunks/0_6zqac91bk1r.css",
+      "bytes": 19386,
+      "sha256": "283d26f043b1103e6d2d8cb48ad651362e3e4b9ca4b8d1137f280bd1beb1f1fd"
+    },
+    {
+      "path": "_next/static/chunks/0cz1d0mv5g_q7.js",
+      "bytes": 112594,
+      "sha256": "0973c1d64c88adc8e3c950410cb58b288f72118d5965b78049438deb8f2f9683"
+    },
+    {
+      "path": "_next/static/chunks/0umf92h1sb77c.js",
+      "bytes": 13822,
+      "sha256": "c410d0f2543e080768fc14f73b2bd1fdf103e26956e9730390b5e41c4fb5ff8b"
+    },
+    {
+      "path": "_next/static/chunks/3cfn99dbrcvvp.js",
+      "bytes": 16898,
+      "sha256": "ce93ca628abb25d17ebc40e5db225cc2b25ca3415910428f5dab7aa049ab506b"
+    },
+    {
+      "path": "_next/static/chunks/3o-jjgh-0xxxi.js",
+      "bytes": 30919,
+      "sha256": "f834f291dc8b2b50fad9e5cb7438ba6ac9d813d13f42b46924f4354d89f7ca57"
+    },
+    {
+      "path": "_next/static/chunks/3wbm-994r45kr.js",
+      "bytes": 229820,
+      "sha256": "0112d166f239984294780810c159749ca06e78e3f1ce5db35ab98f31b95c9d5c"
+    },
+    {
+      "path": "_next/static/chunks/turbopack-3-ry682tkyiqk.js",
+      "bytes": 10030,
+      "sha256": "8bbb58cbfd4633c1d828c6bc37bc32abc768a149c01b1dfc4f5131fd81274551"
+    },
+    {
+      "path": "_not-found/__next._full.txt",
+      "bytes": 5786,
+      "sha256": "2c190c79cd965a039ab35aded55a1f3058e626d57cfc0607020ec3485fc41301"
+    },
+    {
+      "path": "_not-found/__next._not-found/__PAGE__.txt",
+      "bytes": 5068,
+      "sha256": "336402a35cc5c833674131b465f37e5e2867b739adf579be964ec9c8661cdb2c"
+    },
+    {
+      "path": "_not-found/__next._tree.txt",
+      "bytes": 218,
+      "sha256": "51eda95427ecf6620564e5d12569500a50c8b8bf27bf4464483a433d239687d5"
+    },
+    {
+      "path": "_not-found/index.html",
+      "bytes": 9613,
+      "sha256": "6619d26c9952432e58a426ada35f06c7df7943c9eff9a3c95eca17f09e565bda"
+    },
+    {
+      "path": "_not-found/index.txt",
+      "bytes": 5786,
+      "sha256": "2c190c79cd965a039ab35aded55a1f3058e626d57cfc0607020ec3485fc41301"
+    },
+    {
+      "path": "fonts/dm-sans.ttf",
+      "bytes": 240164,
+      "sha256": "8cd08d97e89c24d0aa92edd2f0f4c8ee6195eee9b7c9f154865a58b02f0c1c0d"
+    },
+    {
+      "path": "fonts/dmsans-OFL.txt",
+      "bytes": 4482,
+      "sha256": "9af36190332437f5ecd09974de43c1f7c77a310a996cdd8ceb25628b458840e1"
+    },
+    {
+      "path": "fonts/ibm-plex-mono.ttf",
+      "bytes": 135580,
+      "sha256": "6a3412f058c7d8dfd9170c41e85ade48e5156ecb89356110ca57a0a27734af46"
+    },
+    {
+      "path": "fonts/ibmplexmono-OFL.txt",
+      "bytes": 4456,
+      "sha256": "7e6b2818edbd8f6a01ae80641cc8f16a51080d08fb4e532be3a0b6f74adb07da"
+    },
+    {
+      "path": "icon.svg",
+      "bytes": 312,
+      "sha256": "180b8ac984d5bbdf30919ae040271c86c0288cec863f71c9e350b84a97ec28d5"
+    },
+    {
+      "path": "index.html",
+      "bytes": 57436,
+      "sha256": "ba6649d664c6794c46cb5f575eac2a365569b4d56b1b87c04dcdba027030874a"
+    },
+    {
+      "path": "index.txt",
+      "bytes": 10039,
+      "sha256": "2caca16139792d0d747ba8739cd2826685762998a7c4d4a193b4b84707eddb0f"
+    },
+    {
+      "path": "notices.txt",
+      "bytes": 1053,
+      "sha256": "91773f003f1fa9f6e7f20082f664d88ea471d3e1cf10ce8efa2aee3738713c6b"
+    },
+    {
+      "path": "social-card.png",
+      "bytes": 53307,
+      "sha256": "610ae1f4b3bbe277e33b2e1d04cdecd9a14d860573f54a3f9ef7d5b9d3cd164d"
+    },
+    {
+      "path": "us-map.svg",
+      "bytes": 122805,
+      "sha256": "9418b2f5e9380bb6238c29b4b4026ddf639fee6dc58c8f356f63cdfd5e75f140"
+    }
+  ]
+}

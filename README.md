@@ -2,7 +2,7 @@
 
 Energy-aware planning for flexible AI workloads, built for the Torus hackathon.
 
-**Status:** P1–P3 are approved; P4 performance, offline and release checks pass, with the independent review finding corrected and retested. **H4 deployment approval remains pending.**
+**Status:** Core implementation is complete. October 30 release finishing adds job removal, demo reset, branded sharing metadata/card and a favicon. Automated checks pass; fresh browser inspection and public-URL smoke checks remain outstanding. The user will configure and publish hosting; no deployment has been made. See the [publishing instructions](docs/demo.md#publish-it-yourself--october-30-handoff).
 
 The bundled snapshot contains 120 EIA consumption-carbon estimates for July 2, 2026 across five regions. Prices, workloads and capacity are synthetic. The engine calculates illustrative schedules; no real jobs are dispatched or realized savings measured.
 
@@ -18,6 +18,8 @@ npm run dev
 Open http://localhost:3000. `npm test`, `npm run typecheck` and `npm run build` verify the current implementation; the build exports `out/`. The existing `output/preview.html` remains the earlier visual prototype. The production dashboard is the Next.js app, not that prototype.
 
 Try shortening the selected job's deadline, restricting eligible regions or selecting "No spare GPUs." Map/heatmap selections inspect the resulting plan without rescheduling; the carbon/price view toggle is separate from scheduling priority. Invalid drafts are labeled and preserve the previous valid result. Fonts, map and scenario are bundled locally.
+
+Use **Remove selected job** to undo additions, or **Reset demo** to restore the original batch, capacity and inspection settings. Edits stay in the current tab and are lost on reload. Set `SITE_URL` to your actual HTTPS origin before a public build to enable absolute sharing-image and canonical URLs; local use needs no setting. [Step-by-step hosting handoff](docs/demo.md#publish-it-yourself--october-30-handoff).
 
 ## Use the planner independently
 

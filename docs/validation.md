@@ -1,5 +1,44 @@
 # Implementation validation
 
+## October 30, 2026 — local release follow-up
+
+The user authorized necessary finishing work and asked to retain hosting/public-URL setup. The agent has not published or configured a hosting account. The handoff is in [docs/demo.md](demo.md#publish-it-yourself--october-30-handoff). This section supersedes the October 27 artifact counts for the current source; earlier timing/review evidence is retained below as historical evidence.
+
+### Changes and verified behavior
+
+- Added **Remove selected job** through the existing validated planner commit. It updates all policy results and capacity, selects a remaining job, handles the final-job empty state, and permits additions again at the 30-job limit. Removing an invalid selected job can recover the batch. Other invalid drafts still preserve the accepted plan if validation fails.
+- Added **Reset demo**, restoring original jobs, objective, capacity, job/preset selection, inspected region/hour and carbon shading. It also clears invalid drafts. The UI now states that reload/reset restores the original demo; no persistence was added.
+- Aligned the title/description with Sunward, added an SVG favicon and a 1200 × 630 PNG sharing card. The card was rendered and visually inspected. It uses the already bundled IBM Plex Mono font; no new package or external asset request was added. The initial DM Sans rendering attempt failed on the variable font; the final generator uses the supported existing mono font and passes its PNG/dimension assertions.
+- Added optional build-time `SITE_URL`. Configured exports contain canonical, Open Graph and Twitter image URLs for that HTTPS origin. Unconfigured local builds omit host-specific URLs rather than embedding localhost or a speculative production domain. Invalid URLs, credentials, non-HTTPS origins, paths, queries and fragments fail validation. The final `out/` is unconfigured; the user must rebuild with their actual public origin before final upload.
+- Planner source, historical scenario, dependencies and the preserved `output/` prototype are unchanged.
+
+### Fresh checks
+
+| Check | Result |
+|---|---|
+| `npm test` | 87 passed: 31 contract, 32 planner, 16 UI, 8 metadata checks |
+| `npm run typecheck` | Passed |
+| Python `unittest discover -s tests -p test_prepare_data.py` | 11 passed |
+| `npm run smoke:planner` | Passed through the standalone native ESM entry |
+| `node scripts/demo_planner.cjs` | Four teaching situations verified; historical summary and generated examples unchanged |
+| `npm run build` without `SITE_URL` | Passed; local export has no placeholder origin or localhost metadata |
+| Build with `SITE_URL=https://sunward.example` | Passed; HTML assertions verified canonical, `og:url`, `og:image` and `twitter:image`; reserved example origin used only for validation, then removed by a final unconfigured build |
+| Export assets | All root-relative HTML asset references resolve locally; card, icon, map and font/license files are packaged |
+| Sharing-card generator | PNG signature and 1200 × 630 dimensions asserted; output visually inspected |
+| `npm audit --json` | Zero reported vulnerabilities, including development dependencies; not a comprehensive security assessment |
+| Credential-pattern scan | No matches for the scanned provider-key/private-key patterns in src/public/out/data snapshot/scripts; not a guarantee of absence |
+| `git diff --check` | Passed |
+
+Fresh Node benchmark: same two five-region, 24-slot, 30-job fixtures; 20 warmups and 200 retained samples each, including validation and all three policies. Feasible: p50 **1.053 ms**, p95 **2.040 ms**, maximum **3.507 ms**. Saturated: p50 **0.359 ms**, p95 **1.078 ms**, maximum **2.152 ms**. Both pass the 50 ms p95 target. [p4-release-node.json](benchmarks/p4-release-node.json) retains exact requests, environment and every sample; the original p4-node.json was preserved unchanged.
+
+Final local export: **31 files / 1,314,857 raw bytes**. [p4-release-export.json](benchmarks/p4-release-export.json) records sizes and SHA-256 hashes; this is a local build with `SITE_URL` unset. Rebuilding for the actual public origin necessarily changes the HTML and some hashes. The historical 29-file manifest below does not describe this version.
+
+### Verification limits and release disposition
+
+Fresh browser inspection was unavailable: the browser inventory returned **“The browser access host is unavailable.”** The prior turn also stopped native browser control because it could not establish the current URL reliably. No access check was bypassed and no fresh desktop/mobile visual or edit-to-render timing pass is claimed. The 87 automated tests include DOM state transitions but do not establish visual layout or screen-reader usability. Earlier October 27 browser results apply to the earlier UI, not the new action controls.
+
+The local implementation and automated verification are complete. Before a company-tagging post, the user should perform the short desktop/narrow-screen and live-URL checklist in docs/demo.md, including sharing metadata and reset/removal. Public hosting, actual CDN loading, platform preview caching and public URL checks remain unverified. The tool is a simulator: no live dispatch, actual cloud GPU bills, globally optimal fleet scheduling or realized emissions savings are claimed. Optional AI remains disabled. This follow-up was reviewed by the primary agent; no new independent EGM sign-off is claimed.
+
 ## P4 — performance and release preparation, October 27, 2026
 
 H3 was approved by "push and implement next". P3 commit `1317b660b3f9f4215157eaac5b1b8d8ad25bd971` is pushed to `origin/feat/p3-dashboard`. P4 work is on `feat/p4-release`; no production component, planner, dependency or data change was needed. H4 is pending before any deployment.

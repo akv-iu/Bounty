@@ -131,3 +131,68 @@ it("adds a preset at inspected release and switches objective with one shared re
   expect(screen.getByTestId("recommendation").textContent).toContain("CISO");
   expect(screen.getByTestId("policy-regionAndTime").textContent).toContain("$40.00");
 });
+
+it("removes selected work, releases capacity and updates every comparison", () => {
+  const input = fixture(); input.jobs[0].eligibleRegionIds = ["CISO"]; input.jobs[0].deadlineSlot = 2;
+  input.jobs.push({ ...input.jobs[0], id: "eval-2" });
+  render(<PlannerDashboard initialRequest={input} />);
+  select("Selected job", "eval-2");
+  fireEvent.click(screen.getByRole("button", { name: "Remove selected job" }));
+  expect((screen.getByLabelText("Selected job") as HTMLSelectElement).value).toBe("eval-1");
+  expect(screen.getByTestId("cell-detail").textContent).toContain("16 / 32 GPUs free");
+  expect(screen.queryByRole("button", { name: "Inspect job eval-2" })).toBeNull();
+  for (const id of ["earliestHome", "waitHome", "regionAndTime"]) {
+    expect(screen.getByTestId(`policy-${id}`).textContent).toContain("80.00 kg");
+    expect(screen.getByTestId(`policy-${id}`).textContent).toContain("1 / 1");
+  }
+  expect(screen.getByRole("status").textContent).toContain("Removed: eval-2");
+});
+
+it("can remove the last invalid job and add a preset to the empty batch", () => {
+  const input = fixture(); input.jobs[0].releaseSlot = 6;
+  render(<PlannerDashboard initialRequest={input} />);
+  select("Finish by (UTC)", "4");
+  expect(screen.getByRole("alert")).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Remove selected job" }));
+  expect(screen.queryByRole("alert")).toBeNull();
+  expect(screen.getByText("No completed work to compare")).toBeTruthy();
+  expect((screen.getByRole("button", { name: "Remove selected job" }) as HTMLButtonElement).disabled).toBe(true);
+  expect(screen.getByRole("status").textContent).toContain("No jobs in the batch");
+  expect(document.querySelectorAll('[data-assigned="true"]')).toHaveLength(0);
+  fireEvent.click(screen.getByRole("button", { name: "Add preset at inspected hour" }));
+  expect(screen.getByTestId("recommendation").textContent).toContain("eval-1-1");
+  expect(screen.getByTestId("policy-regionAndTime").textContent).toContain("1 / 1");
+});
+
+it("reset restores the original batch, controls and results even with an invalid draft", () => {
+  setup();
+  const original = screen.getByTestId("recommendation").textContent;
+  select("Inspect hour (UTC)", "6");
+  fireEvent.click(screen.getByRole("button", { name: "Add preset at inspected hour" }));
+  select("Scheduling priority", "cost"); select("Capacity preset", "zero");
+  select("Inspect region", "MISO");
+  fireEvent.click(screen.getByRole("button", { name: "Simulated price" }));
+  select("Finish by (UTC)", "4");
+  expect(screen.getByRole("alert")).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Reset demo" }));
+  expect(screen.queryByRole("alert")).toBeNull();
+  expect(screen.getByTestId("recommendation").textContent).toBe(original);
+  for (const [label, value] of [["Selected job", "eval-1"], ["Inspect hour (UTC)", "0"], ["Inspect region", "CISO"], ["Scheduling priority", "carbon"], ["Capacity preset", "original"]]) {
+    expect((screen.getByLabelText(label) as HTMLSelectElement).value).toBe(value);
+  }
+  expect(screen.getByRole("button", { name: "Carbon intensity" }).getAttribute("aria-pressed")).toBe("true");
+  expect(screen.getByTestId("policy-regionAndTime").textContent).toContain("1 / 1");
+});
+
+it("removing a job at the batch limit permits another addition", () => {
+  const input = fixture();
+  input.jobs = Array.from({ length: 30 }, (_, i) => ({ ...input.jobs[0], id: `job-${i}` }));
+  render(<PlannerDashboard initialRequest={input} />);
+  const add = screen.getByRole("button", { name: "Add preset at inspected hour" }) as HTMLButtonElement;
+  expect(add.disabled).toBe(true);
+  fireEvent.click(screen.getByRole("button", { name: "Remove selected job" }));
+  expect(add.disabled).toBe(false);
+  fireEvent.click(add);
+  expect(add.disabled).toBe(true);
+  expect((screen.getByLabelText("Selected job") as HTMLSelectElement).options).toHaveLength(30);
+});

@@ -1,9 +1,9 @@
 import type { Job, PlanRequest } from "../planner";
 import { hour } from "./format";
-export default function JobEditor({ request, job, onEdit, onSelect, onObjective, capacity, onCapacity, presetId, onPreset, presets, onAdd }: {
+export default function JobEditor({ request, job, onEdit, onSelect, onObjective, capacity, onCapacity, presetId, onPreset, presets, onAdd, onRemove, onReset }: {
   request: PlanRequest; job: Job | undefined; onEdit: (job: Job) => void; onSelect: (id: string) => void;
   onObjective: (objective: PlanRequest["objective"]) => void; capacity: string; onCapacity: (value: string) => void;
-  presetId: string; onPreset: (id: string) => void; presets: Job[]; onAdd: () => void;
+  presetId: string; onPreset: (id: string) => void; presets: Job[]; onAdd: () => void; onRemove: () => void; onReset: () => void;
 }) {
   return <>
     <div className="section-top"><div><p className="eyebrow">02 / Shape the workload</p><h2>Where should it run?</h2></div><span className="count">{request.jobs.length}/30 jobs</span></div>
@@ -19,6 +19,8 @@ export default function JobEditor({ request, job, onEdit, onSelect, onObjective,
       </div>
       <fieldset><legend>Eligible regions</legend><div className="eligibility">{request.regions.map(r => <label key={r.id}><input aria-label={`Allow ${r.id}`} type="checkbox" checked={job.eligibleRegionIds.includes(r.id)} onChange={e => onEdit({ ...job, eligibleRegionIds: e.target.checked ? [...job.eligibleRegionIds, r.id] : job.eligibleRegionIds.filter(id => id !== r.id) })} />{r.id}</label>)}</div></fieldset>
     </>}
+    <div className="batch-actions"><button disabled={!job} onClick={onRemove}>Remove selected job</button><button onClick={onReset}>Reset demo</button></div>
+    <p className="muted session-note">Edits stay in this tab. Reset or reload restores the original demo.</p>
     <details className="add-job"><summary>Add a workload preset</summary><label>Workload preset<select value={presetId} onChange={e => onPreset(e.target.value)}>{presets.map(p => <option key={p.id} value={p.id}>{p.id} · {p.durationSlots}h / {p.gpus} GPUs</option>)}</select></label><p className="muted">Release at the inspected hour; deadline six hours later, or the full duration if longer. Values beyond the day are rejected.</p><button className="secondary" onClick={onAdd} disabled={!presets.length || request.jobs.length >= 30}>Add preset at inspected hour</button></details>
   </>;
 }

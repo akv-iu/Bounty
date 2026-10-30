@@ -41,7 +41,42 @@ Timing starts at the native select change timestamp or checkbox click captured b
 
 For offline exploration, stop the serving process after assets load. Change priority, inspect another region/hour, switch heatmap measure, then reject/restore capacity. The already loaded app must continue working. An offline page reload is not supported; there is no service worker or persistent edit storage.
 
-## Proposed release — H4 approval required
+## Publish it yourself — October 30 handoff
+
+The user authorized local finishing work and retained hosting/account/public-URL setup. No deployment has been made. Use Cloudflare Pages Direct Upload for this static app; no backend, API keys or custom domain are needed. The previous proposed project name `sunward-akv-bounty` is optional and its availability is unverified.
+
+1. In your Cloudflare account, open **Workers & Pages → Create application → Get started → Drag and drop your files**. Choose a Pages project name. Use the actual assigned `https://…pages.dev` origin in the next step.
+2. From `D:\Projects\Bounty`, using Node 24.21.0, build the upload folder in PowerShell:
+
+   ```powershell
+   npm ci
+   if ($LASTEXITCODE -ne 0) { throw "Dependency installation failed" }
+   $env:SITE_URL = 'https://YOUR-PROJECT.pages.dev'
+   npm test
+   if ($LASTEXITCODE -ne 0) { throw "Tests failed" }
+   npm run build
+   if ($LASTEXITCODE -ne 0) { throw "Build failed" }
+   ```
+
+   Replace the example URL with your actual HTTPS origin, with no subpath, query or fragment. `SITE_URL` sets the canonical and social-image URLs at build time. It is not a secret. You may instead put `SITE_URL=…` in a local `.env.local` file; `.env.example` documents the setting. Without it, local use works and host-specific sharing URLs are omitted. Setting an environment variable in Cloudflare after a Direct Upload does not change already-built HTML.
+3. Upload **only `out/`**, with `index.html` at the upload root, then deploy. Do not upload the repository, `.next/`, or the old `output/` prototype. If Cloudflare assigns a different origin, rebuild with that `SITE_URL` and create a new production deployment before sharing.
+4. Open the public URL and complete the checks below. Subsequent releases use **Create a new deployment → Production** with a newly built `out/`. A custom domain can wait; if added later, rebuild with that origin.
+
+Cloudflare supports folders or ZIPs for dashboard upload. Direct Upload projects cannot switch to Git integration; that requires a new project. These instructions were checked against [Cloudflare Direct Upload documentation](https://developers.cloudflare.com/pages/get-started/direct-upload/) on October 30, 2026. No CLI installation is needed for the dashboard route.
+
+### Before you post the public link
+
+- Confirm the page title says Sunward, the map and fonts load, and the historical/simulated classification is visible.
+- Shorten `batch-eval`'s deadline to 12:00 and check that the recommendation and comparison rows update. Exclude CISO and check the unequal-work warning.
+- Set No spare GPUs, confirm no completed work is comparable, then restore Snapshot capacity.
+- Add a preset, remove it, remove the final job, then add again. Reset demo must restore the original three jobs and settings. Edits are not saved across reloads.
+- At a phone-width window (about 390 px), check the new action buttons, full page and locally scrolling heatmap. Tab to the controls and use the keyboard to edit and reset.
+- Open `/social-card.png`, `/icon.svg` and `/notices.txt` on your domain. Inspect page source: canonical, `og:url`, `og:image` and `twitter:image` should use your real public origin. Test the link preview on the platform where you will post; cached previews may take time to refresh.
+- Keep the wording accurate: independent planning simulator; historical carbon estimates; simulated prices, capacity and jobs; calculated outcomes, no dispatched compute or measured savings. The default batch has zero additional geographic benefit versus waiting at home.
+
+The social card is committed under `public/`. To regenerate it after intentional artwork changes, run `node scripts/generate_social_card.mjs`, then rebuild. It uses the existing bundled IBM Plex Mono font and Next image renderer, with no new dependency.
+
+### Earlier proposed release — historical P4 record
 
 Destination: Cloudflare Pages project **sunward-akv-bounty**, proposed URL **https://sunward-akv-bounty.pages.dev**. Upload only the verified `out/` directory using Direct Upload, in the user's selected Cloudflare account. The account and name availability are not yet verified; this URL is not live. If unavailable, obtain approval for a replacement name/account before publishing.
 
