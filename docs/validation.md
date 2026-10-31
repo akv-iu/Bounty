@@ -1,5 +1,25 @@
 # Implementation validation
 
+## October 31, 2026 — Cloudflare static deployment correction
+
+The supplied cloud build log completed Next.js compilation, TypeScript and static export, then failed inside OpenNext with `ENOENT` for `.next/standalone/.next/server/pages-manifest.json`. Without a Wrangler configuration, `npx wrangler deploy` auto-configured a Next.js server deployment even though this application uses `output: "export"`.
+
+Added `wrangler.jsonc` for the log's existing `bounty` Worker, with `assets.directory` set to `./out` and static 404-page handling. No server entry point, OpenNext adapter, dependency change or application-code change is needed. Updated the publishing instructions for this Git-connected Worker and retained Pages Direct Upload as an alternative.
+
+Verification on Windows with Node v24.21.0 and npm 11.19.0:
+
+| Check | Result |
+|---|---|
+| `npm run build` | Passed, including TypeScript and static export |
+| `npm test` | All 87 tests passed across four files |
+| `npx --yes wrangler@4.156.0 deploy --dry-run` | Passed; Wrangler read 40 files from `out/`, completed packaging and exited without deployment or OpenNext setup |
+| Export spot check | `index.html`, `404.html`, `social-card.png` and `icon.svg` present |
+| `git diff --check` | Passed |
+
+No Cloudflare account settings were changed, no assets were published, and no push was performed because the connected branch can trigger publication. Account permissions, the final `SITE_URL`, public routing and live browser behavior remain unverified. The user should publish the corrected commit using the settings in [the hosting handoff](demo.md#existing-git-connected-worker--october-31-correction), then perform its public-URL checks. Existing browser-review limitations remain unchanged.
+
+Follow-up: the second supplied cloud log (15:05–15:07 UTC) repeated the same auto-migration failure. Inspection confirmed the correction was still uncommitted locally and remote `main` remained `7da173c755b72aae59e41dd120b4b1b634f46e8c`. The fix had not reached the cloud build. In response to the user's instruction to finish the correction after the commit/push handoff, prepare and push the verified configuration to the existing integration. The previously passing code and configuration are unchanged; deployment success must be checked separately from those local results.
+
 ## October 30, 2026 — local release follow-up
 
 The user authorized necessary finishing work and asked to retain hosting/public-URL setup. The agent has not published or configured a hosting account. The handoff is in [docs/demo.md](demo.md#publish-it-yourself--october-30-handoff). This section supersedes the October 27 artifact counts for the current source; earlier timing/review evidence is retained below as historical evidence.

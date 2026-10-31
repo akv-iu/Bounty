@@ -43,6 +43,31 @@ For offline exploration, stop the serving process after assets load. Change prio
 
 ## Publish it yourself — October 30 handoff
 
+### Existing Git-connected Worker — October 31 correction
+
+The supplied Cloudflare log shows a successful Next.js export followed by a failed OpenNext migration during `npx wrangler deploy`. This repository now includes `wrangler.jsonc`, naming the existing `bounty` Worker and serving only `out/`. The explicit configuration avoids framework auto-setup; no OpenNext adapter or server bundle is needed. Keep `output: "export"` in `next.config.ts`.
+
+For the existing Cloudflare **bounty** project, use:
+
+| Build setting | Value |
+|---|---|
+| Root directory | Repository root |
+| Production branch | `main` |
+| Build command | `npm run build` |
+| Deploy command | `npx wrangler@4.156.0 deploy` |
+| Build variable `NODE_VERSION` | `24.21.0` |
+| Build variable `SITE_URL` | The actual HTTPS origin shown in your project's Domains & Routes, with no path |
+
+The asset directory is configured in `wrangler.jsonc`; do not select `.next/` or `output/`. Set `SITE_URL` in the **build** environment, since the HTML metadata is generated during `npm run build`. The Worker name must match `bounty`; update the configuration if you intentionally rename your Cloudflare project.
+
+Commit and push the corrected configuration to `main` when you are ready to publish. A push can trigger the connected Cloudflare deployment automatically. Ensure the next build uses that new commit; retrying the old commit will repeat the failure. If old generated OpenNext settings persist, clear the Cloudflare build cache before rebuilding.
+
+To validate packaging locally without publishing, run `npm run build`, then `npx --yes wrangler@4.156.0 deploy --dry-run`. This does not verify account permissions or the public URL. After your deployment succeeds, complete **Before you post the public link** below.
+
+Sources: [Workers static asset configuration](https://developers.cloudflare.com/workers/static-assets/binding/), [Workers Builds settings](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/), and [Wrangler deployment / automatic framework setup](https://developers.cloudflare.com/workers/wrangler/commands/workers/).
+
+### Alternative: Pages Direct Upload
+
 The user authorized local finishing work and retained hosting/account/public-URL setup. No deployment has been made. Use Cloudflare Pages Direct Upload for this static app; no backend, API keys or custom domain are needed. The previous proposed project name `sunward-akv-bounty` is optional and its availability is unverified.
 
 1. In your Cloudflare account, open **Workers & Pages → Create application → Get started → Drag and drop your files**. Choose a Pages project name. Use the actual assigned `https://…pages.dev` origin in the next step.
